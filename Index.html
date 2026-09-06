@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<style>
+body{margin:0;background:transparent;pointer-events:none;overflow:hidden}
+.crosshair{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;pointer-events:none}
+.crosshair-line{position:absolute;background:rgba(255,0,0,0.9);border-radius:2px;box-shadow:0 0 10px rgba(255,0,0,0.6)}
+.crosshair-line.top{top:0;left:50%;transform:translateX(-50%);width:2px;height:22px}
+.crosshair-line.bottom{bottom:0;left:50%;transform:translateX(-50%);width:2px;height:22px}
+.crosshair-line.left{top:50%;left:0;transform:translateY(-50%);width:22px;height:2px}
+.crosshair-line.right{top:50%;right:0;transform:translateY(-50%);width:22px;height:2px}
+.crosshair-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:5px;height:5px;background:rgba(255,0,0,0.9);border-radius:50%;box-shadow:0 0 16px rgba(255,0,0,0.8)}
+</style>
+</head>
+<body>
+<div class="crosshair">
+<div class="crosshair-line top"></div>
+<div class="crosshair-line bottom"></div>
+<div class="crosshair-line left"></div>
+<div class="crosshair-line right"></div>
+<div class="crosshair-dot"></div>
+</div>
+</body>
+</html>
