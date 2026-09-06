@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CheatiOSVip DSW</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background: linear-gradient(145deg, #0b0f17 0%, #1a1f2e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            color: #d0d9e6;
+            overflow: hidden;
+            position: relative;
+        }
+        /* Hoa anh đào rơi */
+        .sakura {
+            position: fixed;
+            top: -20px;
+            font-size: 22px;
+            color: #f7c6d9;
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: 9999;
+            animation: sakuraFall linear infinite;
+            text-shadow: 0 0 8px rgba(255, 150, 200, 0.3);
+        }
+        @keyframes sakuraFall {
+            0% { transform: translateY(-10vh) rotate(0deg) scale(0.8); opacity: 0.9; }
+            100% { transform: translateY(110vh) rotate(720deg) scale(1.2); opacity: 0.1; }
+        }
+        .app {
+            max-width: 420px;
+            width: 100%;
+            background: rgba(17, 27, 36, 0.88);
+            backdrop-filter: blur(16px);
+            border-radius: 32px;
+            padding: 24px 20px 30px;
+            border: 1px solid rgba(31, 46, 60, 0.6);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            position: relative;
+            z-index: 10;
+        }
+        .screen {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .screen.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== MUSIC CONTROL ===== */
+        .music-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(26,42,58,0.8);
+            border: 1px solid #2a4055;
+            border-radius: 30px;
+            padding: 6px 14px;
+            font-size: 12px;
+            color: #b0c8e0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(4px);
+            z-index: 20;
+            transition: 0.3s;
+        }
+        .music-btn:hover {
+            background: #2a4055;
+        }
+
+        /* ===== AUTH ===== */
+        .auth-title {
+            font-size: 28px;
+            font-weight: 800;
+            text-align: center;
+            margin-top: 10px;
+            letter-spacing: 1px;
+            color: #f0faff;
+        }
+        .auth-title span {
+            color: #ff3b6f;
+        }
+        .auth-sub {
+            font-size: 15px;
+            color: #8a9bb0;
+            text-align: center;
+            margin: 4px 0 24px;
+        }
+        .auth-box {
+            background: rgba(13,23,32,0.6);
+            border: 1px solid #1a2a3a;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: left;
+        }
+        .auth-box label {
+            font-size: 14px;
+            color: #8a9bb0;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .auth-box .input-row {
+            display: flex;
+            gap: 8px;
+        }
+        .auth-box .input-row input {
+            flex: 1;
+            background: #1a2332;
+            border: 1px solid #2f3b4f;
+            border-radius: 12px;
+            padding: 12px 14px;
+            color: #f0f9ff;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .auth-box .input-row input:focus {
+            border-color: #4a8ab0;
+            box-shadow: 0 0 12px rgba(74,138,176,0.3);
+        }
+        .auth-box .input-row input::placeholder {
+            color: #4a5a6e;
+            font-size: 14px;
+        }
+        .auth-box .input-row button {
+            background: linear-gradient(135deg, #1a3a5a, #2a5a7a);
+            border: none;
+            border-radius: 12px;
+            padding: 0 20px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid #2a6a8a;
+            white-space: nowrap;
+        }
+        .auth-box .input-row button:hover {
+            background: linear-gradient(135deg, #2a5a7a, #3a7a9a);
+            box-shadow: 0 0 16px rgba(42,106,138,0.3);
+            transform: scale(1.02);
+        }
+        .auth-error {
+            color: #ff6464;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 12px;
+            display: none;
+        }
+        .auth-success {
+            color: #6fcf97;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 12px;
+            display: none;
+        }
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #6a7f9a;
+            cursor: default;
+        }
+        .auth-footer .admin-link {
+            color: #4a8ab0;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-left: 8px;
+            transition: 0.3s;
+        }
+        .auth-footer .admin-link:hover {
+            color: #6a9ab0;
+            text-shadow: 0 0 12px rgba(74,138,176,0.4);
+        }
+
+        /* ===== WELCOME ===== */
+        .welcome-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: #f0faff;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .welcome-sub {
+            font-size: 18px;
+            color: #8a9bb0;
+            text-align: center;
+            margin: 10px 0 20px;
+        }
+        .welcome-desc {
+            background: rgba(13,23,32,0.6);
+            border: 1px solid #1a2a3a;
+            border-radius: 16px;
+            padding: 20px;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #b0c8e0;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .welcome-btn {
+            width: 100%;
+            padding: 14px 0;
+            background: linear-gradient(135deg, #1a3a5a, #2a5a7a);
+            border: 1px solid #2a6a8a;
+            border-radius: 40px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .welcome-btn:hover {
+            background: linear-gradient(135deg, #2a5a7a, #3a7a9a);
+            box-shadow: 0 0 20px rgba(42,106,138,0.3);
+            transform: scale(1.02);
+        }
+
+        /* ===== HOME ===== */
+        .home-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1f2e3c;
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+        }
+        .home-header .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #f0faff;
+        }
+        .home-header .logo span {
+            color: #ff3b6f;
+        }
+        .home-header .actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .home-header .settings-btn {
+            background: none;
+            border: 1px solid #2a4055;
+            border-radius: 30px;
+            padding: 4px 12px;
+            color: #b0c8e0;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            line-height: 1.4;
+        }
+        .home-header .settings-btn:hover {
+            background: #2a4055;
+            transform: scale(1.05);
+        }
+        .home-header .badge {
+            background: #1a2a3a;
+            border: 1px solid #2a4055;
+            border-radius: 30px;
+            padding: 4px 14px;
+            font-size: 12px;
+            color: #b0c8e0;
+            white-space: nowrap;
+        }
+        .home-info {
+            background: rgba(13,23,32,0.6);
+            border: 1px solid #1a2a3a;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 18px;
+        }
+        .home-info .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 15px;
+            color: #8a9bb0;
+        }
+        .home-info .row .value {
+            color: #d0d9e6;
+            font-weight: 500;
+        }
+        .home-info .row .value.green {
+            color: #6fcf97;
+        }
+        .home-info .row .value.gold {
+            color: #f5c542;
+        }
+
+        .game-list {
+            margin: 18px 0;
+        }
+        .game-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(13,23,32,0.6);
+            border: 1px solid #1a2a3a;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .game-item:hover {
+            border-color: #2a4055;
+            background: #121d2a;
+            transform: scale(1.01);
+            box-shadow: 0 0 20px rgba(42,64,85,0.2);
+        }
+        .game-item .left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .game-item .left .icon {
+            font-size: 28px;
+        }
+        .game-item .left .info .name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f0faff;
+        }
+        .game-item .left .info .id {
+            font-size: 12px;
+            color: #6a7f9a;
+        }
+        .game-item .right {
+            color: #4a8ab0;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .game-item .right .arrow {
+            font-size: 18px;
+        }
+
+        .key-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(13,23,32,0.6);
+            border: 1px solid #1a2a3a;
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-top: 10px;
+        }
+        .key-section .key-info {
+            font-size: 15px;
+            color: #8a9bb0;
+        }
+        .key-section .key-info .key-text {
+            color: #f5c542;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .key-section .key-info .time {
+            color: #ff6464;
+            margin-left: 6px;
+        }
+        .key-section .change-btn {
+            background: none;
+            border: 1px solid #2a4055;
+            border-radius: 30px;
+            padding: 6px 16px;
+            color: #b0c8e0;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .key-section .change-btn:hover {
+            background: #2a4055;
+            transform: scale(1.05);
+        }
+
+        /* ===== PATCH ===== */
+        .patch-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1f2e3c;
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+        }
+        .patch-header .title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #f0faff;
+        }
+        .patch-header .back {
+            background: none;
+            border: 1px solid #2a4055;
+            border-radius: 30px;
+            padding: 6px 16px;
+            color: #b0c8e0;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .patch-header .back:hover {
+            background: #2a4055;
+            transform: scale(1.05);
+        }
+
+        .patch-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(13,23,32,0.6);
+            border: 1px solid #1a2a3a;
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            transition: 0.3s;
+        }
+        .patch-item:hover {
+            border-color: #2f4057;
+            background: #111d2a;
+        }
+        .patch-item .name {
+            font-size: 16px;
+            color: #d0d9e6;
+            font-weight: 500;
+        }
+        .patch-item .switch {
+            position: relative;
+            width: 46px;
+            height: 26px;
+            background: #2a3a52;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            flex-shrink: 0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .patch-item .switch.active {
+            background: #65ef28;
+            box-shadow: 0 0 20px rgba(101,239,40,0.3);
+        }
+        .patch-item .switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            transition: 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .patch-item .switch.active::after {
+            left: 23px;
+        }
+
+        /* ===== SETTINGS SCREEN ===== */
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1f2e3c;
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+        }
+        .settings-header .title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #f0faff;
+        }
+        .settings-header .back {
+            background: none;
+            border: 1px solid #2a4055;
+            border-radius: 30px;
+            padding: 6px 16px;
+            color: #b0c8e0;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .settings-header .back:hover {
+            background: #2a4055;
+            transform: scale(1.05);
+        }
+
+        .settings-content {
+            background: rgba(13,23,32,0.6);
+            border: 1px solid #1a2a3a;
+            border-radius: 16px;
+            padding: 16px;
+        }
+        .settings-content .os-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #1a2a3a;
+        }
+        .settings-content .os-row:last-child {
+            border-bottom: none;
+        }
+        .settings-content .os-row .version {
+            font-weight: 700;
+            color: #f0faff;
+            font-size: 16px;
+            min-width: 60px;
+        }
+        .settings-content .os-row .range {
+            color: #8a9bb0;
+            font-size: 14px;
+            flex: 1;
+            text-align: right;
+        }
+        .settings-content .os-row .range .highlight {
+            color: #f5c542;
+        }
+        .settings-content .beta-section {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid #1a2a3a;
+        }
+        .settings-content .beta-section .beta-title {
+            font-weight: 700;
+            color: #b0c8e0;
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+        .settings-content .beta-section .beta-item {
+            padding: 4px 0;
+            color: #8a9bb0;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .settings-content .beta-section .beta-item .code {
+            color: #d0d9e6;
+            font-family: monospace;
+        }
+        .settings-note {
+            margin-top: 14px;
+            font-size: 13px;
+            color: #6a7f9a;
+            text-align: center;
+            border-top: 1px solid #1a2a3a;
+            padding-top: 12px;
+        }
+
+        /* ===== ADMIN MODAL ===== */
+        .admin-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+        .admin-overlay.active {
+            display: flex;
+        }
+        .admin-modal {
+            background: #111b24;
+            border: 1px solid #1f2e3c;
+            border-radius: 32px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            padding: 24px 20px 30px;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            animation: fadeIn 0.4s ease;
+        }
+        .admin-modal h2 {
+            color: #f0faff;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+        .admin-modal .sub {
+            color: #8a9bb0;
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+        .admin-modal .close-btn {
+            float: right;
+            background: none;
+            border: none;
+            color: #b0c8e0;
+            font-size: 24px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .admin-modal .close-btn:hover {
+            color: #ff6464;
+            transform: rotate(90deg);
+        }
+        .admin-modal .section {
+            background: rgba(13,23,32,0.6);
+            border: 1px solid #1a2a3a;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            transition: 0.3s;
+        }
+        .admin-modal .section-title {
+            font-weight: 700;
+            color: #b0c8e0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #1a2a3a;
+            padding-bottom: 8px;
+            font-size: 16px;
+        }
+        .admin-modal .type-selector {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        .admin-modal .type-selector .type-btn {
+            flex: 1 0 auto;
+            padding: 8px 0;
+            background: #1a2332;
+            border: 1px solid #2f3b4f;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: #8a9bb0;
+            cursor: pointer;
+            transition: 0.3s;
+            min-width: 44px;
+        }
+        .admin-modal .type-selector .type-btn.active {
+            background: #1a2c3e;
+            border-color: #3a6a8a;
+            color: #f0faff;
+            box-shadow: 0 0 12px rgba(58,106,138,0.3);
+        }
+        .admin-modal .type-selector .type-btn:hover {
+            transform: scale(1.05);
+        }
+        .admin-modal .gen-btn {
+            width: 100%;
+            padding: 12px 0;
+            background: linear-gradient(135deg, #1a3a5a, #2a5a7a);
+            border: none;
+            border-radius: 40px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid #2a6a8a;
+        }
+        .admin-modal .gen-btn:hover {
+            background: linear-gradient(135deg, #2a5a7a, #3a7a9a);
+            box-shadow: 0 0 16px rgba(42,106,138,0.3);
+            transform: scale(1.02);
+        }
+        .admin-modal .key-display {
+            background: #1a2332;
+            border: 1px solid #2f3b4f;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-family: monospace;
+            font-size: 18px;
+            color: #f5c542;
+            text-align: center;
+            margin-top: 12px;
+            word-break: break-all;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .admin-modal .key-display:hover {
+            border-color: #4a8ab0;
+            background: #1e2a3a;
+        }
+        .admin-modal .key-display .hint {
+            font-size: 12px;
+            color: #6a7f9a;
+            display: block;
+            margin-top: 4px;
+        }
+        .admin-modal .key-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .admin-modal .key-list .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid #1a2a3a;
+            font-size: 14px;
+        }
+        .admin-modal .key-list .item .k {
+            color: #f5c542;
+            font-family: monospace;
+            font-size: 13px;
+            word-break: break-all;
+        }
+        .admin-modal .key-list .item .e {
+            color: #6a7f9a;
+            font-size: 12px;
+            white-space: nowrap;
+            margin-left: 8px;
+        }
+        .admin-modal .key-list .item .del-btn {
+            background: none;
+            border: none;
+            color: #ff6464;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0 6px;
+            transition: 0.3s;
+        }
+        .admin-modal .key-list .item .del-btn:hover {
+            color: #ff8a8a;
+            transform: scale(1.2);
+        }
+
+        .admin-login-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .admin-login-row input {
+            flex: 1;
+            min-width: 100px;
+            background: #1a2332;
+            border: 1px solid #2f3b4f;
+            border-radius: 12px;
+            padding: 10px 14px;
+            color: #f0f9ff;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .admin-login-row input:focus {
+            border-color: #4a8ab0;
+            box-shadow: 0 0 12px rgba(74,138,176,0.3);
+        }
+        .admin-login-row button {
+            background: linear-gradient(135deg, #2a5a7a, #3a7a9a);
+            border: none;
+            border-radius: 12px;
+            padding: 0 20px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .admin-login-row button:hover {
+            background: linear-gradient(135deg, #3a7a9a, #4a8ab0);
+            transform: scale(1.05);
+        }
+        .admin-modal .error-msg {
+            color: #ff6464;
+            font-size: 13px;
+            text-align: center;
+            display: none;
+        }
+
+        .check-section {
+            margin-top: 12px;
+        }
+        .check-section .input-group {
+            display: flex;
+            gap: 8px;
+        }
+        .check-section .input-group input {
+            flex: 1;
+            background: #1a2332;
+            border: 1px solid #2f3b4f;
+            border-radius: 12px;
+            padding: 10px 14px;
+            color: #f0f9ff;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .check-section .input-group input:focus {
+            border-color: #4a8ab0;
+            box-shadow: 0 0 12px rgba(74,138,176,0.3);
+        }
+        .check-section .input-group button {
+            background: linear-gradient(135deg, #2a5a7a, #3a7a9a);
+            border: none;
+            border-radius: 12px;
+            padding: 0 20px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+        .check-section .input-group button:hover {
+            background: linear-gradient(135deg, #3a7a9a, #4a8ab0);
+            transform: scale(1.05);
+        }
+        .check-section .activate-btn {
+            width: 100%;
+            margin-top: 8px;
+            padding: 10px 0;
+            background: linear-gradient(135deg, #1a3a5a, #2a5a7a);
+            border: none;
+            border-radius: 40px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid #2a6a8a;
+        }
+        .check-section .activate-btn:hover {
+            background: linear-gradient(135deg, #2a5a7a, #3a7a9a);
+            box-shadow: 0 0 16px rgba(42,106,138,0.3);
+            transform: scale(1.02);
+        }
+        .check-result {
+            margin-top: 8px;
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+        .check-result.success {
+            display: block;
+            background: #1a2c2a;
+            border: 1px solid #6fcf97;
+            color: #6fcf97;
+        }
+        .check-result.error {
+            display: block;
+            background: #2c1a1a;
+            border: 1px solid #ff6464;
+            color: #ff6464;
+        }
+        .check-result.expired {
+            display: block;
+            background: #2c2a1a;
+            border: 1px solid #f5c542;
+            color: #f5c542;
+        }
+
+        /* toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            background: #1a2332;
+            border: 1px solid #2f3b4f;
+            border-radius: 16px;
+            padding: 14px 18px;
+            color: #d0d9e6;
+            font-size: 14px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+            z-index: 9999;
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .toast.error {
+            border-color: #ff6464;
+            color: #ff6464;
+        }
+        .toast.success {
+            border-color: #65ef28;
+            color: #65ef28;
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0d1720; }
+        ::-webkit-scrollbar-thumb { background: #2a4055; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<!-- Hoa anh đào rơi -->
+<div id="sakuraContainer"></div>
+
+<!-- Nút nhạc -->
+<div class="music-btn" id="musicToggle">
+    <span id="musicIcon">🎵</span>
+    <span id="musicLabel">Nhạc</span>
+</div>
+
+<div class="app" id="app">
+
+    <!-- ===== SCREEN AUTH ===== -->
+    <div class="screen active" id="screenAuth">
+        <div class="auth-title">CheatiOSVip <span>DSW</span></div>
+        <div class="auth-sub">Nhập Key Kích Hoạt</div>
+        <div class="auth-box">
+            <label>Nhập mã key</label>
+            <div class="input-row">
+                <input type="text" id="licenseInput" placeholder="VD: 1H-XXXX-XXXX-XXXX" value="">
+                <button id="activateBtn">Kích hoạt</button>
+            </div>
+            <div class="auth-error" id="authError">⚠️ Key không hợp lệ!</div>
+            <div class="auth-success" id="authSuccess">✅ Kích hoạt thành công!</div>
+        </div>
+        <div class="auth-footer">
+            Make By ©CheatiOSVip
+            <span class="admin-link" id="adminLink">🔧 Quản trị</span>
+        </div>
+    </div>
+
+    <!-- ===== SCREEN WELCOME ===== -->
+    <div class="screen" id="screenWelcome">
+        <div class="welcome-title">HELLO</div>
+        <div class="welcome-sub">Chào mừng bạn đến với apps auto patch</div>
+        <div class="welcome-desc">
+            Ứng dụng này là một bản fork/remake dựa trên mã nguồn filzaslop hỗ trợ ios 15. đến 27. và được phát triển, chỉnh sửa độc lập.<br><br>
+            Ứng dụng này không phải là ứng dụng của 3105.
+        </div>
+        <button class="welcome-btn" id="welcomeBtn">Đóng</button>
+    </div>
+
+    <!-- ===== SCREEN HOME ===== -->
+    <div class="screen" id="screenHome">
+        <div class="home-header">
+            <div class="logo">CheatioS <span>vip</span></div>
+            <div class="actions">
+                <button class="settings-btn" id="settingsBtn">⚙️</button>
+                <span class="badge">Trợ thủ game</span>
+            </div>
+        </div>
+        <div class="home-info">
+            <div class="row"><span>Phiên bản iOS</span><span class="value">27.0</span></div>
+            <div class="row"><span>Thiết bị</span><span class="value">iPhone 12 Pro</span></div>
+            <div class="row"><span>Hỗ trợ</span><span class="value green">Không hỗ trợ</span></div>
+        </div>
+        <div class="game-list">
+            <div class="game-item" data-game="th">
+                <div class="left">
+                    <span class="icon">⚡</span>
+                    <div class="info">
+                        <div class="name">Free Fire</div>
+                        <div class="id">com.dts.freefireth</div>
+                    </div>
+                </div>
+                <div class="right">MỞ GAME <span class="arrow">›</span></div>
+            </div>
+            <div class="game-item" data-game="max">
+                <div class="left">
+                    <span class="icon">🔥</span>
+                    <div class="info">
+                        <div class="name">Free Fire Max</div>
+                        <div class="id">com.dts.freefiremax</div>
+                    </div>
+                </div>
+                <div class="right">MỞ GAME <span class="arrow">›</span></div>
+            </div>
+        </div>
+        <div class="key-section">
+            <div class="key-info">
+                <span class="key-text" id="homeKeyDisplay">KEY ---</span>
+                <span class="time" id="homeTimeDisplay">- Không có</span>
+            </div>
+            <button class="change-btn" id="changeKeyBtn">ĐỔI KEY</button>
+        </div>
+    </div>
+
+    <!-- ===== SCREEN PATCH ===== -->
+    <div class="screen" id="screenPatch">
+        <div class="patch-header">
+            <div class="title" id="patchGameTitle">Free Fire</div>
+            <button class="back" id="backHomeBtn">← Quay lại</button>
+        </div>
+        <div class="patch-item"><span class="name">Aim Drag Free Fire</span><div class="switch" data-patch="aim_drag"></div></div>
+        <div class="patch-item"><span class="name">Aim Neck Free Fire</span><div class="switch" data-patch="aim_neck"></div></div>
+        <div class="patch-item"><span class="name">Aim Bung Free Fire</span><div class="switch" data-patch="aim_bung"></div></div>
+        <div class="patch-item"><span class="name">Aim Magic Free Fire</span><div class="switch" data-patch="aim_magic"></div></div>
+        <div class="patch-item"><span class="name">Aim Body Free Fire</span><div class="switch" data-patch="aim_body"></div></div>
+    </div>
+
+    <!-- ===== SCREEN SETTINGS ===== -->
+    <div class="screen" id="screenSettings">
+        <div class="settings-header">
+            <div class="title">⚙️ Cài đặt</div>
+            <button class="back" id="backHomeFromSettingsBtn">← Quay lại</button>
+        </div>
+        <div class="settings-content">
+            <div class="os-row">
+                <span class="version">15</span>
+                <span class="range">iOS 15 <span class="highlight">15.0 – 15.8.x</span></span>
+            </div>
+            <div class="os-row">
+                <span class="version">16</span>
+                <span class="range">iOS 16 <span class="highlight">16.0 – 16.7.x</span></span>
+            </div>
+            <div class="os-row">
+                <span class="version">17</span>
+                <span class="range">iOS 17 <span class="highlight">17.0 – 17.7.x</span></span>
+            </div>
+            <div class="os-row">
+                <span class="version">18</span>
+                <span class="range">iOS 18 <span class="highlight">18.0 – 18.7.1</span></span>
+            </div>
+            <div class="os-row">
+                <span class="version">26</span>
+                <span class="range">iOS 26 <span class="highlight">26.0 – 26.6.1</span></span>
+            </div>
+            <div class="os-row">
+                <span class="version">27</span>
+                <span class="range">iOS <span class="highlight">27.0</span></span>
+            </div>
+
+            <div class="beta-section">
+                <div class="beta-title">Beta</div>
+                <div class="beta-item"><span>Beta 1</span><span class="code">24A5355q</span></div>
+                <div class="beta-item"><span>Beta 2</span><span class="code">24A5370h</span></div>
+                <div class="beta-item"><span>Beta 3</span><span class="code">24A5380h</span></div>
+                <div class="beta-item"><span>Beta 4</span><span class="code">24A5390f</span></div>
+            </div>
+
+            <div class="settings-note">
+                Chỉ các build chính xác ở trên được bật. Build iOS 27 khác sẽ bị đánh dấu chưa hỗ trợ cho đến khi được xác.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ADMIN MODAL ===== -->
+<div class="admin-overlay" id="adminOverlay">
+    <div class="admin-modal">
+        <button class="close-btn" id="adminCloseBtn">✕</button>
+        <h2>🔐 Quản trị key</h2>
+        <div class="sub">Tạo và quản lý key hợp lệ</div>
+
+        <!-- Xác thực admin -->
+        <div class="section" id="adminAuthSection">
+            <div class="section-title">Xác thực</div>
+            <div class="admin-login-row">
+                <input type="text" id="adminUsername" placeholder="Tài khoản" value="">
+                <input type="password" id="adminPassword" placeholder="Mật khẩu" value="">
+                <button id="adminLoginBtn">Đăng nhập</button>
+            </div>
+            <div class="error-msg" id="adminAuthError">Sai tài khoản hoặc mật khẩu!</div>
+        </div>
+
+        <!-- Khu vực quản trị -->
+        <div id="adminContent" style="display:none;">
+            <div class="section">
+                <div class="section-title">Tạo key mới</div>
+                <div class="type-selector" id="adminTypeSelector">
+                    <div class="type-btn active" data-type="1H">1H</div>
+                    <div class="type-btn" data-type="1D">1D</div>
+                    <div class="type-btn" data-type="7D">7D</div>
+                    <div class="type-btn" data-type="1T">1T</div>
+                    <div class="type-btn" data-type="VV">VV</div>
+                </div>
+                <button class="gen-btn" id="adminGenBtn">⚡ Tạo key</button>
+                <div class="key-display" id="adminKeyDisplay">
+                    <span id="adminGeneratedKeyText">---</span>
+                    <span class="hint">~ NHẤN VÀO ĐÂY ĐỂ SAO CHÉP ~</span>
+                </div>
+                <div style="margin-top:8px; font-size:14px; color:#6a7f9a; text-align:center;" id="adminGenMsg"></div>
+            </div>
+
+            <div class="section">
+                <div class="section-title" style="display:flex; justify-content:space-between; align-items:center;">
+                    <span>Danh sách key</span>
+                    <button class="clear-btn" style="background:none;border:1px solid #2a4055;border-radius:30px;padding:4px 12px;color:#b0c8e0;font-size:12px;cursor:pointer;transition:0.3s;" id="adminClearAll">Xóa tất cả</button>
+                </div>
+                <div class="key-list" id="adminKeyList">
+                    <div style="color:#6a7f9a; font-size:14px; text-align:center; padding:10px 0;">Chưa có key</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">🔍 Kiểm tra key</div>
+                <div class="check-section">
+                    <div class="input-group">
+                        <input type="text" id="adminCheckInput" placeholder="Nhập key (VD: 1H-XXXX-XXXX-XXXX)">
+                        <button id="adminCheckBtn">Kiểm tra</button>
+                    </div>
+                    <button class="activate-btn" id="adminActivateBtn">Kích hoạt key này</button>
+                    <div class="check-result" id="adminCheckResult"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<!-- Audio nhạc nền -->
+<audio id="bgMusic" loop preload="auto">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+    (function() {
+        // ========== QUẢN LÝ KEY ==========
+        const ADMIN_STORAGE = 'admin_keys';
+        const USER_STORAGE_KEY = 'cheatios_key';
+        const USER_STORAGE_EXPIRE = 'cheatios_expire';
+        const USER_STORAGE_ACTIVATED = 'cheatios_activated';
+
+        // DOM
+        const screenAuth = document.getElementById('screenAuth');
+        const screenWelcome = document.getElementById('screenWelcome');
+        const screenHome = document.getElementById('screenHome');
+        const screenPatch = document.getElementById('screenPatch');
+        const screenSettings = document.getElementById('screenSettings');
+
+        const licenseInput = document.getElementById('licenseInput');
+        const activateBtn = document.getElementById('activateBtn');
+        const authError = document.getElementById('authError');
+        const authSuccess = document.getElementById('authSuccess');
+        const welcomeBtn = document.getElementById('welcomeBtn');
+        const changeKeyBtn = document.getElementById('changeKeyBtn');
+        const backHomeBtn = document.getElementById('backHomeBtn');
+        const backHomeFromSettingsBtn = document.getElementById('backHomeFromSettingsBtn');
+        const homeKeyDisplay = document.getElementById('homeKeyDisplay');
+        const homeTimeDisplay = document.getElementById('homeTimeDisplay');
+        const patchGameTitle = document.getElementById('patchGameTitle');
+        const settingsBtn = document.getElementById('settingsBtn');
+
+        // Admin
+        const adminLink = document.getElementById('adminLink');
+        const adminOverlay = document.getElementById('adminOverlay');
+        const adminCloseBtn = document.getElementById('adminCloseBtn');
+        const adminAuthSection = document.getElementById('adminAuthSection');
+        const adminUsername = document.getElementById('adminUsername');
+        const adminPassword = document.getElementById('adminPassword');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const adminAuthError = document.getElementById('adminAuthError');
+        const adminContent = document.getElementById('adminContent');
+        const adminTypeSelector = document.getElementById('adminTypeSelector');
+        const adminGenBtn = document.getElementById('adminGenBtn');
+        const adminKeyDisplay = document.getElementById('adminKeyDisplay');
+        const adminGeneratedKeyText = document.getElementById('adminGeneratedKeyText');
+        const adminGenMsg = document.getElementById('adminGenMsg');
+        const adminKeyList = document.getElementById('adminKeyList');
+        const adminClearAll = document.getElementById('adminClearAll');
+        const adminCheckInput = document.getElementById('adminCheckInput');
+        const adminCheckBtn = document.getElementById('adminCheckBtn');
+        const adminActivateBtn = document.getElementById('adminActivateBtn');
+        const adminCheckResult = document.getElementById('adminCheckResult');
+
+        // Music
+        const musicToggle = document.getElementById('musicToggle');
+        const musicIcon = document.getElementById('musicIcon');
+        const musicLabel = document.getElementById('musicLabel');
+        const bgMusic = document.getElementById('bgMusic');
+        let musicOn = false;
+
+        let currentKey = null;
+        let keyExpireTime = 0;
+        let keyActivated = false;
+        let selectedGame = 'th';
+        let adminLoggedIn = false;
+
+        // ========== HOA ANH ĐÀO RƠI ==========
+        function createSakura() {
+            const container = document.getElementById('sakuraContainer');
+            const petals = ['🌸', '🍂', '🌸', '🌸', '🌸', '🌸'];
+            for (let i = 0; i < 35; i++) {
+                const el = document.createElement('div');
+                el.className = 'sakura';
+                el.textContent = petals[Math.floor(Math.random() * petals.length)];
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.fontSize = (14 + Math.random() * 20) + 'px';
+                el.style.animationDuration = (12 + Math.random() * 18) + 's';
+                el.style.animationDelay = (Math.random() * 20) + 's';
+                el.style.opacity = 0.3 + Math.random() * 0.6;
+                container.appendChild(el);
+            }
+        }
+        createSakura();
+
+        // ========== MUSIC ==========
+        musicToggle.addEventListener('click', function() {
+            musicOn = !musicOn;
+            if (musicOn) {
+                bgMusic.play().catch(() => {});
+                musicIcon.textContent = '🔇';
+                musicLabel.textContent = 'Tắt nhạc';
+            } else {
+                bgMusic.pause();
+                musicIcon.textContent = '🎵';
+                musicLabel.textContent = 'Nhạc';
+            }
+        });
+
+        // ========== HELPER ==========
+        function showToast(msg, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.className = 'toast ' + (type || '');
+            toast.style.display = 'block';
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => { toast.style.display = 'none'; }, 4000);
+        }
+
+        function showScreen(screen) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            screen.classList.add('active');
+        }
+
+        // ========== ADMIN KEY FUNCTIONS ==========
+        function getAdminKeys() {
+            try {
+                const data = localStorage.getItem(ADMIN_STORAGE);
+                return data ? JSON.parse(data) : [];
+            } catch { return []; }
+        }
+
+        function saveAdminKeys(keys) {
+            localStorage.setItem(ADMIN_STORAGE, JSON.stringify(keys));
+        }
+
+        function generateRandomSegment(len = 4) {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            for (let i = 0; i < len; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        function generateKey(prefix) {
+            const seg1 = generateRandomSegment(4);
+            const seg2 = generateRandomSegment(4);
+            const seg3 = generateRandomSegment(4);
+            return prefix + '-' + seg1 + '-' + seg2 + '-' + seg3;
+        }
+
+        function getExpireTime(prefix) {
+            const now = Date.now();
+            switch(prefix) {
+                case '1H': return now + 60 * 60 * 1000;
+                case '1D': return now + 24 * 60 * 60 * 1000;
+                case '7D': return now + 7 * 24 * 60 * 60 * 1000;
+                case '1T': return now + 30 * 24 * 60 * 60 * 1000;
+                case 'VV': return now + 100 * 365 * 24 * 60 * 60 * 1000;
+                default: return now + 60 * 60 * 1000;
+            }
+        }
+
+        function getKeyLabel(prefix) {
+            switch(prefix) {
+                case '1H': return '1 giờ';
+                case '1D': return '1 ngày';
+                case '7D': return '7 ngày';
+                case '1T': return '1 tháng';
+                case 'VV': return 'Vĩnh viễn';
+                default: return 'Không xác định';
+            }
+        }
+
+        function adminCreateKey(prefix) {
+            const keys = getAdminKeys();
+            const newKey = generateKey(prefix);
+            const expire = getExpireTime(prefix);
+            keys.push({ key: newKey, expire, type: prefix });
+            saveAdminKeys(keys);
+            renderAdminKeyList();
+            return newKey;
+        }
+
+        function adminDeleteKey(key) {
+            let keys = getAdminKeys();
+            keys = keys.filter(item => item.key !== key);
+            saveAdminKeys(keys);
+            renderAdminKeyList();
+        }
+
+        function adminClearAllKeys() {
+            if (confirm('Xóa tất cả key admin?')) {
+                saveAdminKeys([]);
+                renderAdminKeyList();
+            }
+        }
+
+        function renderAdminKeyList() {
+            const keys = getAdminKeys();
+            if (keys.length === 0) {
+                adminKeyList.innerHTML = `<div style="color:#6a7f9a; font-size:14px; text-align:center; padding:10px 0;">Chưa có key</div>`;
+                return;
+            }
+            let html = '';
+            const now = Date.now();
+            keys.forEach(item => {
+                const valid = item.expire > now;
+                const status = valid ? '✅' : '⛔';
+                const timeLeft = valid ? formatTimeLeft(item.expire) : 'Hết hạn';
+                html += `
+                    <div class="item">
+                        <span class="k">${item.key}</span>
+                        <span class="e">${timeLeft}</span>
+                        <button class="del-btn" data-key="${item.key}">✕</button>
+                    </div>
+                `;
+            });
+            adminKeyList.innerHTML = html;
+            document.querySelectorAll('#adminKeyList .del-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const key = this.dataset.key;
+                    if (confirm('Xóa key ' + key + '?')) {
+                        adminDeleteKey(key);
+                    }
+                });
+            });
+        }
+
+        function formatTimeLeft(expire) {
+            const diff = expire - Date.now();
+            if (diff <= 0) return 'Hết hạn';
+            const days = Math.floor(diff / 86400000);
+            const hours = Math.floor((diff % 86400000) / 3600000);
+            const mins = Math.floor((diff % 3600000) / 60000);
+            if (days > 0) return `${days} ngày ${hours}h`;
+            else if (hours > 0) return `${hours}h ${mins}p`;
+            else return `${mins}p`;
+        }
+
+        // ========== USER KEY FUNCTIONS ==========
+        function isValidAdminKey(key) {
+            const keys = getAdminKeys();
+            const found = keys.find(item => item.key === key);
+            if (!found) return { valid: false, reason: 'not_found' };
+            if (found.expire < Date.now()) return { valid: false, reason: 'expired' };
+            return { valid: true, expire: found.expire, type: found.type };
+        }
+
+        function activateUserKey(key) {
+            const result = isValidAdminKey(key);
+            if (!result.valid) {
+                if (result.reason === 'not_found') {
+                    authError.textContent = '❌ Key không tồn tại! (Không phải admin tạo)';
+                } else if (result.reason === 'expired') {
+                    authError.textContent = '⏰ Key đã hết hạn!';
+                } else {
+                    authError.textContent = '⚠️ Key không hợp lệ!';
+                }
+                authError.style.display = 'block';
+                authSuccess.style.display = 'none';
+                return false;
+            }
+            currentKey = key;
+            keyExpireTime = result.expire;
+            keyActivated = true;
+            localStorage.setItem(USER_STORAGE_KEY, key);
+            localStorage.setItem(USER_STORAGE_EXPIRE, String(keyExpireTime));
+            localStorage.setItem(USER_STORAGE_ACTIVATED, 'true');
+            authError.style.display = 'none';
+            authSuccess.style.display = 'block';
+            const label = getKeyLabel(result.type);
+            authSuccess.textContent = `✅ Kích hoạt thành công! (${label})`;
+            return true;
+        }
+
+        function loadSavedUserKey() {
+            const key = localStorage.getItem(USER_STORAGE_KEY);
+            const expire = parseInt(localStorage.getItem(USER_STORAGE_EXPIRE) || '0', 10);
+            const activated = localStorage.getItem(USER_STORAGE_ACTIVATED) === 'true';
+            if (key && activated && expire > Date.now()) {
+                const result = isValidAdminKey(key);
+                if (result.valid) {
+                    currentKey = key;
+                    keyExpireTime = expire;
+                    keyActivated = true;
+                    return true;
+                } else {
+                    localStorage.removeItem(USER_STORAGE_KEY);
+                    localStorage.removeItem(USER_STORAGE_EXPIRE);
+                    localStorage.removeItem(USER_STORAGE_ACTIVATED);
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        function updateHomeScreen() {
+            if (currentKey && keyActivated) {
+                const displayKey = currentKey.length > 8 ? currentKey.substring(0,4) + '●●...' + currentKey.slice(-4) : currentKey;
+                homeKeyDisplay.textContent = 'KEY ' + displayKey;
+                const timeStr = formatTimeLeft(keyExpireTime);
+                homeTimeDisplay.textContent = '- ' + timeStr;
+            } else {
+                homeKeyDisplay.textContent = 'KEY ---';
+                homeTimeDisplay.textContent = '- Không có';
+            }
+        }
+
+        // ========== EVENT HANDLERS ==========
+        activateBtn.addEventListener('click', function() {
+            const key = licenseInput.value.trim().toUpperCase();
+            if (!key) {
+                authError.style.display = 'block';
+                authError.textContent = '⚠️ Vui lòng nhập key!';
+                authSuccess.style.display = 'none';
+                return;
+            }
+            if (activateUserKey(key)) {
+                setTimeout(() => {
+                    showScreen(screenWelcome);
+                }, 600);
+            }
+        });
+
+        licenseInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') activateBtn.click();
+        });
+
+        welcomeBtn.addEventListener('click', function() {
+            showScreen(screenHome);
+            updateHomeScreen();
+        });
+
+        document.querySelectorAll('.game-item').forEach(item => {
+            item.addEventListener('click', function() {
+                if (!keyActivated) {
+                    showToast('⚠️ Bạn chưa kích hoạt key!', 'error');
+                    return;
+                }
+                selectedGame = this.dataset.game;
+                const name = selectedGame === 'max' ? 'Free Fire Max' : 'Free Fire';
+                patchGameTitle.textContent = name;
+                showScreen(screenPatch);
+            });
+        });
+
+        changeKeyBtn.addEventListener('click', function() {
+            localStorage.removeItem(USER_STORAGE_KEY);
+            localStorage.removeItem(USER_STORAGE_EXPIRE);
+            localStorage.removeItem(USER_STORAGE_ACTIVATED);
+            currentKey = null;
+            keyActivated = false;
+            showScreen(screenAuth);
+            licenseInput.value = '';
+            authError.style.display = 'none';
+            authSuccess.style.display = 'none';
+        });
+
+        backHomeBtn.addEventListener('click', function() {
+            showScreen(screenHome);
+            updateHomeScreen();
+        });
+
+        // Settings
+        settingsBtn.addEventListener('click', function() {
+            showScreen(screenSettings);
+        });
+        backHomeFromSettingsBtn.addEventListener('click', function() {
+            showScreen(screenHome);
+            updateHomeScreen();
+        });
+
+        // ========== SWITCH PATCH ==========
+        document.querySelectorAll('.switch').forEach(sw => {
+            sw.addEventListener('click', function() {
+                if (!keyActivated) {
+                    showToast('⚠️ Vui lòng kích hoạt key trước!', 'error');
+                    return;
+                }
+                this.classList.toggle('active');
+                const patchName = this.dataset.patch;
+                const isOn = this.classList.contains('active');
+                showToast(`${patchName} ${isOn ? 'BẬT' : 'TẮT'}`, isOn ? 'success' : '');
+            });
+        });
+
+        // ========== ADMIN MODAL ==========
+        adminLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            adminOverlay.classList.add('active');
+            if (adminLoggedIn) {
+                adminAuthSection.style.display = 'none';
+                adminContent.style.display = 'block';
+                renderAdminKeyList();
+            } else {
+                adminAuthSection.style.display = 'block';
+                adminContent.style.display = 'none';
+                adminAuthError.style.display = 'none';
+                adminUsername.value = '';
+                adminPassword.value = '';
+            }
+        });
+
+        adminCloseBtn.addEventListener('click', function() {
+            adminOverlay.classList.remove('active');
+        });
+
+        adminOverlay.addEventListener('click', function(e) {
+            if (e.target === this) adminOverlay.classList.remove('active');
+        });
+
+        adminLoginBtn.addEventListener('click', function() {
+            const user = adminUsername.value.trim();
+            const pass = adminPassword.value.trim();
+            if (user === 'haianh2026' && pass === 'chanbomaydi') {
+                adminLoggedIn = true;
+                adminAuthSection.style.display = 'none';
+                adminContent.style.display = 'block';
+                renderAdminKeyList();
+                showToast('✅ Đăng nhập admin thành công', 'success');
+            } else {
+                adminAuthError.style.display = 'block';
+            }
+        });
+
+        adminPassword.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') adminLoginBtn.click();
+        });
+        adminUsername.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') adminLoginBtn.click();
+        });
+
+        let selectedAdminType = '1H';
+        document.querySelectorAll('#adminTypeSelector .type-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#adminTypeSelector .type-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedAdminType = this.dataset.type;
+            });
+        });
+
+        adminGenBtn.addEventListener('click', function() {
+            if (!adminLoggedIn) return;
+            const newKey = adminCreateKey(selectedAdminType);
+            adminGeneratedKeyText.textContent = newKey;
+            adminGenMsg.textContent = `✅ Đã tạo key: ${newKey} (${getKeyLabel(selectedAdminType)})`;
+            adminGenMsg.style.color = '#6fcf97';
+            setTimeout(() => { adminGenMsg.textContent = ''; }, 5000);
+            showToast(`✅ Key mới: ${newKey}`, 'success');
+        });
+
+        adminKeyDisplay.addEventListener('click', function() {
+            const text = adminGeneratedKeyText.textContent;
+            if (text && text !== '---') {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        showToast('✅ Đã sao chép key!', 'success');
+                    }).catch(() => fallbackCopy(text));
+                } else {
+                    fallbackCopy(text);
+                }
+            }
+        });
+
+        function fallbackCopy(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast('✅ Đã sao chép key!', 'success');
+        }
+
+        adminClearAll.addEventListener('click', adminClearAllKeys);
+
+        // ========== ADMIN CHECK + ACTIVATE ==========
+        function showAdminCheckResult(msg, type) {
+            adminCheckResult.className = 'check-result ' + type;
+            adminCheckResult.textContent = msg;
+            adminCheckResult.style.display = 'block';
+        }
+
+        adminCheckBtn.addEventListener('click', function() {
+            const key = adminCheckInput.value.trim().toUpperCase();
+            if (!key) {
+                showAdminCheckResult('⚠️ Vui lòng nhập key!', 'error');
+                return;
+            }
+            const result = isValidAdminKey(key);
+            if (result.valid) {
+                const timeLeft = formatTimeLeft(result.expire);
+                showAdminCheckResult(`✅ Key hợp lệ! Còn ${timeLeft}`, 'success');
+            } else {
+                if (result.reason === 'not_found') {
+                    showAdminCheckResult('❌ Key không tồn tại!', 'error');
+                } else if (result.reason === 'expired') {
+                    showAdminCheckResult('⏰ Key đã hết hạn!', 'expired');
+                } else {
+                    showAdminCheckResult('❌ Lỗi không xác định', 'error');
+                }
+            }
+        });
+
+        adminActivateBtn.addEventListener('click', function() {
+            const key = adminCheckInput.value.trim().toUpperCase();
+            if (!key) {
+                showAdminCheckResult('⚠️ Vui lòng nhập key để kích hoạt!', 'error');
+                return;
+            }
+            const result = isValidAdminKey(key);
+            if (!result.valid) {
+                if (result.reason === 'not_found') {
+                    showAdminCheckResult('❌ Key không tồn tại!', 'error');
+                } else if (result.reason === 'expired') {
+                    showAdminCheckResult('⏰ Key đã hết hạn!', 'expired');
+                } else {
+                    showAdminCheckResult('❌ Key không hợp lệ!', 'error');
+                }
+                return;
+            }
+            if (activateUserKey(key)) {
+                showAdminCheckResult(`✅ Kích hoạt thành công! (${getKeyLabel(result.type)})`, 'success');
+                setTimeout(() => {
+                    adminOverlay.classList.remove('active');
+                    showScreen(screenWelcome);
+                }, 800);
+            } else {
+                showAdminCheckResult('❌ Kích hoạt thất bại!', 'error');
+            }
+        });
+
+        adminCheckInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') adminCheckBtn.click();
+        });
+
+        // ========== INIT ==========
+        if (loadSavedUserKey()) {
+            showScreen(screenHome);
+            updateHomeScreen();
+        } else {
+            showScreen(screenAuth);
+        }
+
+        console.log('CheatiOSVip DSW - với hoa anh đào, nhạc, settings và admin haianh2026/chanbomaydi');
+    })();
+</script>
+</body>
+</html>
