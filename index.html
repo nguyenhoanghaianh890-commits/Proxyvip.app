@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PROXY VIP VN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background: #05070a;
+            color: #c8d4e0;
+            min-height: 100vh;
+            padding: 16px;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .app {
+            max-width: 480px;
+            width: 100%;
+            background: #0a0e14;
+            border-radius: 20px;
+            padding: 24px 20px 30px;
+            border: 1px solid #1a2a3a;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 40px rgba(0,212,255,0.05);
+            position: relative;
+            min-height: 600px;
+        }
+        .screen {
+            display: none;
+        }
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #1a2a3a;
+        }
+        .header .logo {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .header .logo span {
+            color: #00d4ff;
+            text-shadow: 0 0 20px rgba(0,212,255,0.5);
+        }
+        .header .status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #00d4ff;
+            background: rgba(0,212,255,0.08);
+            padding: 4px 12px;
+            border-radius: 30px;
+            border: 1px solid rgba(0,212,255,0.2);
+        }
+        .header .status .dot {
+            width: 6px;
+            height: 6px;
+            background: #00d4ff;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ===== FORM ===== */
+        .input-group {
+            margin-bottom: 16px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            color: #6a7f8f;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: #0f1720;
+            border: 1px solid #1a2a3a;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            outline: none;
+            transition: 0.3s;
+            letter-spacing: 1px;
+        }
+        .input-group input:focus {
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0,212,255,0.1);
+        }
+        .input-group input::placeholder {
+            color: #3a4a5a;
+            letter-spacing: 0;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            width: 100%;
+            padding: 14px 0;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            letter-spacing: 0.5px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #00b4d8, #0077b6);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 30px rgba(0,180,216,0.3);
+            transform: translateY(-1px);
+        }
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-secondary {
+            background: #0f1720;
+            border: 1px solid #1a2a3a;
+            color: #6a7f8f;
+            margin-top: 8px;
+        }
+        .btn-secondary:hover {
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: #fff;
+        }
+        .btn-success:hover {
+            box-shadow: 0 0 30px rgba(46,204,113,0.3);
+        }
+
+        /* ===== INFO BOX ===== */
+        .info-box {
+            background: #0f1720;
+            border: 1px solid #1a2a3a;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .info-box .info-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #151f2a;
+            font-size: 13px;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-row .label {
+            color: #6a7f8f;
+        }
+        .info-row .value {
+            color: #c8d4e0;
+            font-weight: 600;
+        }
+        .info-row .value.success {
+            color: #2ecc71;
+        }
+        .info-row .value.error {
+            color: #e63946;
+        }
+        .info-row .value.gold {
+            color: #f1c40f;
+        }
+
+        /* ===== TOGGLE SWITCH ===== */
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #151f2a;
+        }
+        .toggle-row:last-child {
+            border-bottom: none;
+        }
+        .toggle-row .label {
+            font-size: 14px;
+            color: #c8d4e0;
+            font-weight: 500;
+        }
+        .toggle-row .label .sub {
+            display: block;
+            font-size: 11px;
+            color: #6a7f8f;
+            margin-top: 2px;
+        }
+        .switch {
+            position: relative;
+            width: 46px;
+            height: 26px;
+            background: #1a2a3a;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.3s;
+            flex-shrink: 0;
+        }
+        .switch.on {
+            background: #00d4ff;
+            box-shadow: 0 0 20px rgba(0,212,255,0.3);
+        }
+        .switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        .switch.on::after {
+            left: 23px;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f1720;
+            border: 1px solid #1a2a3a;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 13px;
+            z-index: 9999;
+            display: none;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            max-width: 90vw;
+            text-align: center;
+        }
+        .toast.show {
+            display: block;
+            animation: toastIn 0.3s ease;
+        }
+        .toast.success { border-color: #2ecc71; color: #2ecc71; }
+        .toast.error { border-color: #e63946; color: #e63946; }
+        .toast.info { border-color: #00d4ff; color: #00d4ff; }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* ===== LOADING ===== */
+        .loading {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-right: 6px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== KEY RESULT ===== */
+        .key-result {
+            background: #0f1720;
+            border: 1px solid #2ecc71;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            text-align: center;
+            display: none;
+        }
+        .key-result.show {
+            display: block;
+        }
+        .key-result .key-text {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: #f1c40f;
+            word-break: break-all;
+            margin: 8px 0;
+            letter-spacing: 1px;
+        }
+        .key-result .key-hint {
+            font-size: 12px;
+            color: #6a7f8f;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #1a2a3a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .section-title.pink {
+            color: #e91e63;
+        }
+
+        /* ===== ADMIN ===== */
+        .admin-panel {
+            display: none;
+        }
+        .admin-panel.active {
+            display: block;
+        }
+        .admin-panel .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #6a7f8f;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .admin-panel .close-btn:hover {
+            color: #e63946;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #1a2a3a;
+            font-size: 11px;
+            color: #3a4a5a;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 400px) {
+            .app { padding: 18px 14px 24px; }
+            .header .logo { font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+    <!-- ===== SCREEN 1: NHẬP KEY ===== -->
+    <div class="screen active" id="screenKey">
+        <div class="header">
+            <div class="logo">PROXY <span>VIP VN</span></div>
+            <div class="status"><span class="dot"></span>ONLINE</div>
+        </div>
+
+        <div class="section-title">// NHẬP KEY</div>
+
+        <div class="input-group">
+            <label>Nhập key kích hoạt (1H / 1D / 7D / 30D)</label>
+            <input type="text" id="inputKey" placeholder="VD: 1H-XXXX-XXXX-XXXX" autocomplete="off">
+        </div>
+
+        <button class="btn btn-primary" onclick="doLogin()" id="btnLogin">KÍCH HOẠT</button>
+        <button class="btn btn-secondary" onclick="showScreen('screenGetKey')">📥 NHẬN KEY FREE</button>
+
+        <div class="footer">
+            PROXY VIP VN · DEV · VIETNAM
+        </div>
+    </div>
+
+    <!-- ===== SCREEN 2: NHẬN KEY FREE ===== -->
+    <div class="screen" id="screenGetKey">
+        <div class="header">
+            <div class="logo">SERVER<span>KEY</span></div>
+            <div class="status"><span class="dot"></span>ONLINE</div>
+        </div>
+
+        <div class="section-title">// FREE KEY SYSTEM</div>
+
+        <div class="info-box">
+            <div class="info-title">📱 KEY FREE PROXY IPA</div>
+            <div style="font-size:12px;color:#6a7f8f;margin-bottom:12px;">
+                Dùng cho bản cài IPA / Tweak iOS Free Fire
+            </div>
+            <div class="info-row">
+                <span class="label">Thời hạn key</span>
+                <span class="value gold">1 Giờ</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Hôm nay</span>
+                <span class="value" id="todayCount">0 / 3000</span>
+            </div>
+            <div class="info-row">
+                <span class="label">IP này</span>
+                <span class="value" id="ipCount">0 / 2</span>
+            </div>
+        </div>
+
+        <div class="key-result" id="freeKeyResult">
+            <div style="font-size:12px;color:#6a7f8f;">KEY CỦA BẠN</div>
+            <div class="key-text" id="freeKeyText">----</div>
+            <div class="key-hint">Nhấn để sao chép</div>
+        </div>
+
+        <button class="btn btn-success" onclick="getFreeKey()" id="btnGetKey" style="margin-top:16px;">📥 LẤY KEY FREE</button>
+        <button class="btn btn-secondary" onclick="showScreen('screenKey')">← QUAY LẠI</button>
+
+        <div class="footer">
+            <span style="color:#3a4a5a;">Nếu admin chưa tạo link vượt, không thể lấy key</span>
+        </div>
+    </div>
+
+    <!-- ===== SCREEN 3: CHỨC NĂNG ===== -->
+    <div class="screen" id="screenFeatures">
+        <div class="header">
+            <div class="logo">PROXY <span>VIP VN</span></div>
+            <div class="status" id="statusKey"><span class="dot"></span>ACTIVE</div>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">THÔNG TIN KEY</div>
+            <div class="info-row">
+                <span class="label">Trạng thái</span>
+                <span class="value success" id="fStatus">ACTIVE</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Ngày active</span>
+                <span class="value" id="fActiveDate">--</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Hết hạn</span>
+                <span class="value error" id="fExpire">--</span>
+            </div>
+        </div>
+
+        <!-- AIM LIST -->
+        <div class="info-box" style="border-color:#00d4ff;">
+            <div class="section-title">// DANH SÁCH AIM</div>
+            <div class="toggle-row">
+                <div class="label">Aim body <span class="sub" id="aimBodyStatus">ĐANG TẮT</span></div>
+                <div class="switch" onclick="toggleFeature('aim', 'body')" id="sw_aim_body"></div>
+            </div>
+            <div class="toggle-row">
+                <div class="label">Aim drag <span class="sub" id="aimDragStatus">ĐANG TẮT</span></div>
+                <div class="switch" onclick="toggleFeature('aim', 'drag')" id="sw_aim_drag"></div>
+            </div>
+            <div class="toggle-row">
+                <div class="label">Aim magic <span class="sub" id="aimMagicStatus">ĐANG TẮT</span></div>
+                <div class="switch" onclick="toggleFeature('aim', 'magic')" id="sw_aim_magic"></div>
+            </div>
+        </div>
+
+        <!-- VIP LIST -->
+        <div class="info-box" style="border-color:#e91e63;">
+            <div class="section-title pink">// DANH SÁCH CHỨC NĂNG VIP</div>
+            <div class="toggle-row">
+                <div class="label">TÚ LUNG T... <span class="sub">ĐANG TẮT</span></div>
+                <div class="switch" onclick="toggleFeature('vip', 'tulung')" id="sw_vip_tulung"></div>
+            </div>
+            <div class="toggle-row">
+                <div class="label">SPEED X F... <span class="sub">ĐANG TẮT</span></div>
+                <div class="switch" onclick="toggleFeature('vip', 'speedxf')" id="sw_vip_speedxf"></div>
+            </div>
+            <div class="toggle-row">
+                <div class="label">MOVE PC <span class="sub">ĐANG TẮT</span></div>
+                <div class="switch" onclick="toggleFeature('vip', 'movepc')" id="sw_vip_movepc"></div>
+            </div>
+            <div class="toggle-row">
+                <div class="label">CAMERA H... <span class="sub">ĐANG TẮT</span></div>
+                <div class="switch" onclick="toggleFeature('vip', 'camerah')" id="sw_vip_camerah"></div>
+            </div>
+            <div class="toggle-row">
+                <div class="label">FAKE DAM... <span class="sub">ĐANG TẮT</span></div>
+                <div class="switch" onclick="toggleFeature('vip', 'fakedam')" id="sw_vip_fakedam"></div>
+            </div>
+            <div class="toggle-row">
+                <div class="label">FAST FIRE ... <span class="sub">ĐANG TẮT</span></div>
+                <div class="switch" onclick="toggleFeature('vip', 'fastfire')" id="sw_vip_fastfire"></div>
+            </div>
+            <div class="toggle-row">
+                <div class="label">FAST SWIT... <span class="sub">ĐANG TẮT</span></div>
+                <div class="switch" onclick="toggleFeature('vip', 'fastswit')" id="sw_vip_fastswit"></div>
+            </div>
+            <div class="toggle-row">
+                <div class="label">HIGHT JU... <span class="sub">ĐANG TẮT</span></div>
+                <div class="switch" onclick="toggleFeature('vip', 'hightju')" id="sw_vip_hightju"></div>
+            </div>
+            <div class="toggle-row">
+                <div class="label">SKY WALK <span class="sub">ĐANG TẮT</span></div>
+                <div class="switch" onclick="toggleFeature('vip', 'skywalk')" id="sw_vip_skywalk"></div>
+            </div>
+            <div class="toggle-row">
+                <div class="label">SPEED (C... <span class="sub">ĐANG TẮT</span></div>
+                <div class="switch" onclick="toggleFeature('vip', 'speedc')" id="sw_vip_speedc"></div>
+            </div>
+            <div class="toggle-row">
+                <div class="label">BACKJUM... <span class="sub">ĐANG TẮT</span></div>
+                <div class="switch" onclick="toggleFeature('vip', 'backjum')" id="sw_vip_backjum"></div>
+            </div>
+        </div>
+
+        <button class="btn btn-secondary" onclick="changeKey()">🔄 ĐỔI KEY</button>
+
+        <div class="footer">
+            Bạn chỉ cần xác thực 1 lần. IP và thiết bị sẽ bind.
+        </div>
+    </div>
+
+    <!-- ===== SCREEN 4: ADMIN ===== -->
+    <div class="screen" id="screenAdmin">
+        <div class="header">
+            <div class="logo">🔧 ADMIN <span>PANEL</span></div>
+            <div class="status"><span class="dot"></span>ROOT</div>
+        </div>
+        <button class="close-btn" onclick="showScreen('screenKey')">✕</button>
+
+        <div class="section-title">// TẠO KEY MỚI</div>
+        <div class="input-group">
+            <label>Loại key (1H / 1D / 7D / 30D)</label>
+            <input type="text" id="adminKeyType" placeholder="1H" value="1H" maxlength="3">
+        </div>
+        <button class="btn btn-primary" onclick="adminGenerateKey()">⚡ TẠO KEY</button>
+        <div class="key-result" id="adminKeyResult">
+            <div style="font-size:12px;color:#6a7f8f;">KEY MỚI</div>
+            <div class="key-text" id="adminKeyText">----</div>
+            <div class="key-hint">Nhấn để sao chép</div>
+        </div>
+
+        <div class="section-title" style="margin-top:20px;">// GỬI LINK VƯỢT</div>
+        <div class="input-group">
+            <label>Link vượt (dùng để lấy key free)</label>
+            <input type="text" id="adminLink" placeholder="https://serveripa.proxyvip.click/claim?token=..." value="">
+        </div>
+        <button class="btn btn-success" onclick="adminSaveLink()">💾 LƯU LINK</button>
+
+        <div class="section-title" style="margin-top:20px;">// DANH SÁCH KEY</div>
+        <div class="info-box" id="adminKeyList" style="max-height:200px;overflow-y:auto;">
+            <div style="text-align:center;color:#3a4a5a;padding:10px;">Chưa có key nào</div>
+        </div>
+
+        <button class="btn btn-secondary" onclick="showScreen('screenKey')">← QUAY LẠI</button>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+    // ==================================================
+    // ============ ADMIN PASSWORD ============
+    // ==================================================
+    const ADMIN_PASS = "adminproxyvpn";
+
+    // ==================================================
+    // ============ STATE ============
+    // ==================================================
+    let selectedFeatures = { aim: null, vip: null };
+    let activeKey = null;
+
+    // ==================================================
+    // ============ TOAST ============
+    // ==================================================
+    function showToast(msg, type) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.className = 'toast show ' + (type || 'info');
+        clearTimeout(toast._timer);
+        toast._timer = setTimeout(() => { toast.className = 'toast'; }, 2500);
+    }
+
+    // ==================================================
+    // ============ SCREEN ============
+    // ==================================================
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    // ==================================================
+    // ============ KEY DATABASE ============
+    // ==================================================
+    function getKeys() {
+        return JSON.parse(localStorage.getItem('proxyvip_keys') || '{}');
+    }
+    function saveKeys(data) {
+        localStorage.setItem('proxyvip_keys', JSON.stringify(data));
+    }
+
+    // ==================================================
+    // ============ LOGIN ============
+    // ==================================================
+    function doLogin() {
+        const key = document.getElementById('inputKey').value.trim().toUpperCase();
+        if (!key) {
+            showToast('⚠️ Vui lòng nhập key!', 'error');
+            return;
+        }
+
+        // Admin check
+        if (key === ADMIN_PASS.toUpperCase()) {
+            showScreen('screenAdmin');
+            renderAdminKeyList();
+            showToast('✅ Đã vào Admin Panel!', 'success');
+            return;
+        }
+
+        // Key validation
+        const keys = getKeys();
+        const found = keys[key];
+
+        if (!found) {
+            showToast('❌ Key không tồn tại!', 'error');
+            return;
+        }
+
+        if (found.expire < Date.now()) {
+            showToast('⏰ Key đã hết giờ!', 'error');
+            return;
+        }
+
+        // Success
+        activeKey = key;
+        localStorage.setItem('current_key', key);
+        localStorage.setItem('current_key_expire', found.expire);
+
+        document.getElementById('fStatus').textContent = 'ACTIVE';
+        document.getElementById('fActiveDate').textContent = formatDate(found.activeDate || Date.now());
+        document.getElementById('fExpire').textContent = formatDate(found.expire);
+        document.getElementById('statusKey').innerHTML = '<span class="dot"></span>ACTIVE';
+
+        showScreen('screenFeatures');
+        showToast('✅ Kích hoạt thành công!', 'success');
+    }
+
+    // ==================================================
+    // ============ CHANGE KEY ============
+    // ==================================================
+    function changeKey() {
+        if (confirm('🔄 Đổi key khác?')) {
+            localStorage.removeItem('current_key');
+            localStorage.removeItem('current_key_expire');
+            activeKey = null;
+            selectedFeatures = { aim: null, vip: null };
+            document.querySelectorAll('.switch').forEach(s => s.classList.remove('on'));
+            document.getElementById('inputKey').value = '';
+            showScreen('screenKey');
+            showToast('🔄 Đã đổi key', 'success');
+        }
+    }
+
+    // ==================================================
+    // ============ TOGGLE FEATURE ============
+    // ==================================================
+    function toggleFeature(category, name) {
+        const current = selectedFeatures[category];
+
+        // Nếu bấm lại cái đang bật -> tắt
+        if (current === name) {
+            selectedFeatures[category] = null;
+            document.getElementById('sw_' + category + '_' + name).classList.remove('on');
+            updateStatusText(category, name, false);
+            showToast('🔴 Đã tắt: ' + getFeatureName(name), 'error');
+            return;
+        }
+
+        // Tắt cái cũ
+        if (current !== null) {
+            document.getElementById('sw_' + category + '_' + current).classList.remove('on');
+            updateStatusText(category, current, false);
+        }
+
+        // Bật cái mới
+        selectedFeatures[category] = name;
+        document.getElementById('sw_' + category + '_' + name).classList.add('on');
+        updateStatusText(category, name, true);
+        showToast('🟢 Đã bật: ' + getFeatureName(name), 'success');
+    }
+
+    function updateStatusText(category, name, on) {
+        const el = document.getElementById(category + capitalize(name) + 'Status');
+        if (el) {
+            el.textContent = on ? 'ĐANG BẬT' : 'ĐANG TẮT';
+            el.style.color = on ? '#2ecc71' : '#6a7f8f';
+        }
+    }
+
+    function capitalize(s) {
+        return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    function getFeatureName(name) {
+        const map = {
+            body: 'Aim body', drag: 'Aim drag', magic: 'Aim magic',
+            tulung: 'Tú lung tung', speedxf: 'Speed X F', movepc: 'Move PC',
+            camerah: 'Camera H', fakedam: 'Fake Dam', fastfire: 'Fast Fire',
+            fastswit: 'Fast Swit', hightju: 'Hight Ju', skywalk: 'Sky Walk',
+            speedc: 'Speed C', backjum: 'Backjum'
+        };
+        return map[name] || name;
+    }
+
+    // ==================================================
+    // ============ GET FREE KEY ============
+    // ==================================================
+    function getFreeKey() {
+        // Kiểm tra admin đã tạo link chưa
+        const adminLink = localStorage.getItem('admin_link');
+        if (!adminLink) {
+            showToast('❌ Admin chưa tạo link vượt. Không thể lấy key!', 'error');
+            return;
+        }
+
+        const btn = document.getElementById('btnGetKey');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading"></span> ĐANG LẤY KEY...';
+
+        setTimeout(() => {
+            // Tạo key free 1H
+            const newKey = generateKeyString('1H');
+            const expire = Date.now() + 60 * 60 * 1000;
+
+            const keys = getKeys();
+            keys[newKey] = {
+                key: newKey,
+                expire: expire,
+                type: '1H',
+                activeDate: null,
+                free: true
+            };
+            saveKeys(keys);
+
+            // Hiển thị
+            document.getElementById('freeKeyResult').classList.add('show');
+            document.getElementById('freeKeyText').textContent = newKey;
+
+            // Cập nhật counter
+            const todayCount = parseInt(localStorage.getItem('today_count') || '0') + 1;
+            const ipCount = parseInt(localStorage.getItem('ip_count') || '0') + 1;
+            localStorage.setItem('today_count', todayCount);
+            localStorage.setItem('ip_count', ipCount);
+
+            document.getElementById('todayCount').textContent = todayCount + ' / 3000';
+            document.getElementById('ipCount').textContent = ipCount + ' / 2';
+
+            btn.disabled = false;
+            btn.textContent = '📥 LẤY KEY FREE';
+
+            showToast('✅ Lấy key thành công!', 'success');
+        }, 1500);
+    }
+
+    // Nhấn copy key free
+    document.getElementById('freeKeyResult').addEventListener('click', function() {
+        const key = document.getElementById('freeKeyText').textContent;
+        if (key && key !== '----') {
+            navigator.clipboard.writeText(key).then(() => {
+                showToast('✅ Đã sao chép key!', 'success');
+            });
+        }
+    });
+
+    // ==================================================
+    // ============ GENERATE KEY STRING ============
+    // ==================================================
+    function generateKeyString(type) {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let s1 = '', s2 = '', s3 = '';
+        for (let i = 0; i < 4; i++) {
+            s1 += chars.charAt(Math.floor(Math.random() * chars.length));
+            s2 += chars.charAt(Math.floor(Math.random() * chars.length));
+            s3 += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return type + '-' + s1 + '-' + s2 + '-' + s3;
+    }
+
+    // ==================================================
+    // ============ ADMIN ============
+    // ==================================================
+    function adminGenerateKey() {
+        const type = document.getElementById('adminKeyType').value.trim().toUpperCase() || '1H';
+        const validTypes = ['1H', '1D', '7D', '30D'];
+        if (!validTypes.includes(type)) {
+            showToast('❌ Loại key không hợp lệ! (1H/1D/7D/30D)', 'error');
+            return;
+        }
+
+        const key = generateKeyString(type);
+        let hours = 1;
+        if (type === '1D') hours = 24;
+        else if (type === '7D') hours = 24 * 7;
+        else if (type === '30D') hours = 24 * 30;
+
+        const expire = Date.now() + hours * 60 * 60 * 1000;
+
+        const keys = getKeys();
+        keys[key] = {
+            key: key,
+            expire: expire,
+            type: type,
+            activeDate: null,
+            created: Date.now()
+        };
+        saveKeys(keys);
+
+        document.getElementById('adminKeyResult').classList.add('show');
+        document.getElementById('adminKeyText').textContent = key;
+
+        renderAdminKeyList();
+        showToast('✅ Đã tạo key: ' + key, 'success');
+    }
+
+    function adminSaveLink() {
+        const link = document.getElementById('adminLink').value.trim();
+        if (!link) {
+            showToast('⚠️ Vui lòng nhập link vượt!', 'error');
+            return;
+        }
+        localStorage.setItem('admin_link', link);
+        showToast('✅ Đã lưu link vượt!', 'success');
+    }
+
+    function renderAdminKeyList() {
+        const keys = getKeys();
+        const list = document.getElementById('adminKeyList');
+        const keyArray = Object.values(keys);
+
+        if (keyArray.length === 0) {
+            list.innerHTML = '<div style="text-align:center;color:#3a4a5a;padding:10px;">Chưa có key nào</div>';
+            return;
+        }
+
+        list.innerHTML = keyArray.map(item => {
+            const valid = item.expire > Date.now();
+            const remaining = formatTime(item.expire - Date.now());
+            return `
+                <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #151f2a;font-size:12px;">
+                    <span style="color:#f1c40f;font-family:monospace;">${item.key}</span>
+                    <span style="color:${valid ? '#2ecc71' : '#e63946'};">${valid ? remaining : 'Hết hạn'}</span>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ==================================================
+    // ============ UTILS ============
+    // ==================================================
+    function formatDate(ts) {
+        if (!ts) return '--';
+        const d = new Date(ts);
+        const day = String(d.getDate()).padStart(2, '0');
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const year = d.getFullYear();
+        const hour = String(d.getHours()).padStart(2, '0');
+        const min = String(d.getMinutes()).padStart(2, '0');
+        const sec = String(d.getSeconds()).padStart(2, '0');
+        return `${hour}:${min}:${sec} ${day}/${month}/${year}`;
+    }
+
+    function formatTime(ms) {
+        if (ms <= 0) return 'Hết hạn';
+        const h = Math.floor(ms / 3600000);
+        const m = Math.floor((ms % 3600000) / 60000);
+        if (h > 24) return Math.floor(h / 24) + ' ngày';
+        if (h > 0) return h + 'h ' + m + 'm';
+        return m + ' phút';
+    }
+
+    // ==================================================
+    // ============ INIT ============
+    // ==================================================
+    window.addEventListener('load', function() {
+        // Khôi phục key đang dùng
+        const savedKey = localStorage.getItem('current_key');
+        const savedExpire = parseInt(localStorage.getItem('current_key_expire') || '0');
+        if (savedKey && savedExpire > Date.now()) {
+            activeKey = savedKey;
+            const keys = getKeys();
+            const data = keys[savedKey];
+            if (data) {
+                document.getElementById('fStatus').textContent = 'ACTIVE';
+                document.getElementById('fActiveDate').textContent = formatDate(data.activeDate || Date.now());
+                document.getElementById('fExpire').textContent = formatDate(data.expire);
+                showScreen('screenFeatures');
+            }
+        }
+
+        // Counter
+        const todayCount = localStorage.getItem('today_count') || '0';
+        const ipCount = localStorage.getItem('ip_count') || '0';
+        if (document.getElementById('todayCount')) {
+            document.getElementById('todayCount').textContent = todayCount + ' / 3000';
+            document.getElementById('ipCount').textContent = ipCount + ' / 2';
+        }
+
+        // Load admin link
+        const adminLink = localStorage.getItem('admin_link');
+        if (adminLink && document.getElementById('adminLink')) {
+            document.getElementById('adminLink').value = adminLink;
+        }
+
+        // Enter để login
+        document.getElementById('inputKey').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') doLogin();
+        });
+
+        // Admin key type input
+        document.getElementById('adminKeyType').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') adminGenerateKey();
+        });
+
+        // Copy admin key
+        document.getElementById('adminKeyResult').addEventListener('click', function() {
+            const key = document.getElementById('adminKeyText').textContent;
+            if (key && key !== '----') {
+                navigator.clipboard.writeText(key).then(() => {
+                    showToast('✅ Đã sao chép key!', 'success');
+                });
+            }
+        });
+
+        console.log('🚀 PROXY VIP VN - Ready');
+        console.log('🔐 Admin pass: ' + ADMIN_PASS);
+    });
+
+    // Ngăn context menu
+    document.addEventListener('contextmenu', e => e.preventDefault());
+</script>
+</body>
+</html>
