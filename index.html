@@ -5,304 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PROXY VIP VN</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-        body {
-            background: #05070a;
-            color: #c8d4e0;
-            min-height: 100vh;
-            padding: 16px;
-            overflow-x: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .app {
-            max-width: 480px;
-            width: 100%;
-            background: #0a0e14;
-            border-radius: 20px;
-            padding: 24px 20px 30px;
-            border: 1px solid #1a2a3a;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 40px rgba(0,212,255,0.05);
-            position: relative;
-            min-height: 600px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: #05070a; color: #c8d4e0; min-height: 100vh; padding: 16px; overflow-x: hidden; display: flex; justify-content: center; align-items: center; }
+        .app { max-width: 480px; width: 100%; background: #0a0e14; border-radius: 20px; padding: 24px 20px 30px; border: 1px solid #1a2a3a; box-shadow: 0 20px 60px rgba(0,0,0,0.8); position: relative; min-height: 600px; }
         .screen { display: none; }
         .screen.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid #1a2a3a;
-        }
-        .header .logo {
-            font-size: 18px;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: 1px;
-        }
-        .header .logo span {
-            color: #00d4ff;
-            text-shadow: 0 0 20px rgba(0,212,255,0.5);
-        }
-        .header .status {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 11px;
-            color: #00d4ff;
-            background: rgba(0,212,255,0.08);
-            padding: 4px 12px;
-            border-radius: 30px;
-            border: 1px solid rgba(0,212,255,0.2);
-        }
-        .header .status .dot {
-            width: 6px;
-            height: 6px;
-            background: #00d4ff;
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #1a2a3a; }
+        .header .logo { font-size: 18px; font-weight: 800; color: #fff; letter-spacing: 1px; }
+        .header .logo span { color: #00d4ff; text-shadow: 0 0 20px rgba(0,212,255,0.5); }
+        .header .status { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #00d4ff; background: rgba(0,212,255,0.08); padding: 4px 12px; border-radius: 30px; border: 1px solid rgba(0,212,255,0.2); }
+        .header .status .dot { width: 6px; height: 6px; background: #00d4ff; border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         .input-group { margin-bottom: 16px; }
-        .input-group label {
-            display: block;
-            font-size: 12px;
-            color: #6a7f8f;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 14px 16px;
-            background: #0f1720;
-            border: 1px solid #1a2a3a;
-            border-radius: 12px;
-            color: #fff;
-            font-size: 14px;
-            font-family: 'Courier New', monospace;
-            outline: none;
-            transition: 0.3s;
-            letter-spacing: 1px;
-        }
-        .input-group input:focus {
-            border-color: #00d4ff;
-            box-shadow: 0 0 20px rgba(0,212,255,0.1);
-        }
-        .input-group input::placeholder {
-            color: #3a4a5a;
-            letter-spacing: 0;
-        }
-        .btn {
-            width: 100%;
-            padding: 14px 0;
-            border: none;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            letter-spacing: 0.5px;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #00b4d8, #0077b6);
-            color: #fff;
-        }
+        .input-group label { display: block; font-size: 12px; color: #6a7f8f; margin-bottom: 8px; font-weight: 500; }
+        .input-group input { width: 100%; padding: 14px 16px; background: #0f1720; border: 1px solid #1a2a3a; border-radius: 12px; color: #fff; font-size: 14px; font-family: 'Courier New', monospace; outline: none; transition: 0.3s; letter-spacing: 1px; }
+        .input-group input:focus { border-color: #00d4ff; box-shadow: 0 0 20px rgba(0,212,255,0.1); }
+        .input-group input::placeholder { color: #3a4a5a; letter-spacing: 0; }
+        .btn { width: 100%; padding: 14px 0; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.3s; letter-spacing: 0.5px; }
+        .btn-primary { background: linear-gradient(135deg, #00b4d8, #0077b6); color: #fff; }
         .btn-primary:active { transform: scale(0.98); }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn-secondary {
-            background: #0f1720;
-            border: 1px solid #1a2a3a;
-            color: #6a7f8f;
-            margin-top: 8px;
-        }
-        .btn-success {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            color: #fff;
-        }
-        .btn-warning {
-            background: linear-gradient(135deg, #f1c40f, #e67e22);
-            color: #fff;
-        }
-        .info-box {
-            background: #0f1720;
-            border: 1px solid #1a2a3a;
-            border-radius: 12px;
-            padding: 16px;
-            margin-top: 16px;
-        }
-        .info-box .info-title {
-            font-size: 12px;
-            font-weight: 700;
-            color: #00d4ff;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-        }
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #151f2a;
-            font-size: 13px;
-        }
+        .btn-secondary { background: #0f1720; border: 1px solid #1a2a3a; color: #6a7f8f; margin-top: 8px; }
+        .btn-success { background: linear-gradient(135deg, #2ecc71, #27ae60); color: #fff; margin-top: 8px; }
+        .btn-warning { background: linear-gradient(135deg, #f1c40f, #e67e22); color: #fff; margin-top: 8px; }
+        .btn-info { background: linear-gradient(135deg, #00d4ff, #0077b6); color: #fff; margin-top: 8px; }
+        .info-box { background: #0f1720; border: 1px solid #1a2a3a; border-radius: 12px; padding: 16px; margin-top: 16px; }
+        .info-box .info-title { font-size: 12px; font-weight: 700; color: #00d4ff; margin-bottom: 12px; text-transform: uppercase; }
+        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #151f2a; font-size: 13px; }
         .info-row:last-child { border-bottom: none; }
         .info-row .label { color: #6a7f8f; }
         .info-row .value { color: #c8d4e0; font-weight: 600; }
         .info-row .value.success { color: #2ecc71; }
         .info-row .value.error { color: #e63946; }
         .info-row .value.gold { color: #f1c40f; }
-        .toggle-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #151f2a;
-        }
+        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #151f2a; }
         .toggle-row:last-child { border-bottom: none; }
         .toggle-row .label { font-size: 14px; color: #c8d4e0; font-weight: 500; }
-        .toggle-row .label .sub {
-            display: block;
-            font-size: 11px;
-            color: #6a7f8f;
-            margin-top: 2px;
-        }
-        .switch {
-            position: relative;
-            width: 46px;
-            height: 26px;
-            background: #1a2a3a;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: 0.3s;
-            flex-shrink: 0;
-        }
-        .switch.on {
-            background: #00d4ff;
-            box-shadow: 0 0 20px rgba(0,212,255,0.3);
-        }
-        .switch::after {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 20px;
-            height: 20px;
-            background: #fff;
-            border-radius: 50%;
-            transition: 0.3s;
-        }
+        .toggle-row .label .sub { display: block; font-size: 11px; color: #6a7f8f; margin-top: 2px; }
+        .switch { position: relative; width: 46px; height: 26px; background: #1a2a3a; border-radius: 40px; cursor: pointer; transition: 0.3s; flex-shrink: 0; }
+        .switch.on { background: #00d4ff; box-shadow: 0 0 20px rgba(0,212,255,0.3); }
+        .switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; background: #fff; border-radius: 50%; transition: 0.3s; }
         .switch.on::after { left: 23px; }
-        .toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #0f1720;
-            border: 1px solid #1a2a3a;
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-size: 13px;
-            z-index: 9999;
-            display: none;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            max-width: 90vw;
-            text-align: center;
-        }
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #0f1720; border: 1px solid #1a2a3a; color: #fff; padding: 12px 24px; border-radius: 12px; font-size: 13px; z-index: 9999; display: none; box-shadow: 0 10px 40px rgba(0,0,0,0.6); max-width: 90vw; text-align: center; }
         .toast.show { display: block; animation: toastIn 0.3s ease; }
         .toast.success { border-color: #2ecc71; color: #2ecc71; }
         .toast.error { border-color: #e63946; color: #e63946; }
         .toast.info { border-color: #00d4ff; color: #00d4ff; }
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-        .loading {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-            margin-right: 6px;
-        }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(-10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        .loading { display: inline-block; width: 12px; height: 12px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; margin-right: 6px; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .key-result {
-            background: #0f1720;
-            border: 1px solid #2ecc71;
-            border-radius: 12px;
-            padding: 16px;
-            margin-top: 16px;
-            text-align: center;
-            display: none;
-        }
+        .key-result { background: #0f1720; border: 1px solid #2ecc71; border-radius: 12px; padding: 16px; margin-top: 16px; text-align: center; display: none; }
         .key-result.show { display: block; }
-        .key-result .key-text {
-            font-family: 'Courier New', monospace;
-            font-size: 18px;
-            font-weight: 700;
-            color: #f1c40f;
-            word-break: break-all;
-            margin: 8px 0;
-            letter-spacing: 1px;
-        }
+        .key-result .key-text { font-family: 'Courier New', monospace; font-size: 18px; font-weight: 700; color: #f1c40f; word-break: break-all; margin: 8px 0; letter-spacing: 1px; }
         .key-result .key-hint { font-size: 12px; color: #6a7f8f; }
-        .section-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: #00d4ff;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #1a2a3a;
-            text-transform: uppercase;
-        }
+        .section-title { font-size: 13px; font-weight: 700; color: #00d4ff; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #1a2a3a; text-transform: uppercase; }
         .section-title.pink { color: #e91e63; }
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 16px;
-            border-top: 1px solid #1a2a3a;
-            font-size: 11px;
-            color: #3a4a5a;
-        }
-        .sync-status {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-size: 11px;
-            color: #6a7f8f;
-            margin-top: 10px;
-        }
-        .sync-status .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #f1c40f;
-        }
-        .sync-status .dot.online { background: #2ecc71; }
-        .sync-status .dot.offline { background: #e63946; }
-        @media (max-width: 400px) {
-            .app { padding: 18px 14px 24px; }
-            .header .logo { font-size: 15px; }
-        }
+        .footer { text-align: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid #1a2a3a; font-size: 11px; color: #3a4a5a; }
+        @media (max-width: 400px) { .app { padding: 18px 14px 24px; } .header .logo { font-size: 15px; } }
     </style>
 </head>
 <body>
@@ -321,10 +81,6 @@
         </div>
         <button class="btn btn-primary" onclick="doLogin()" id="btnLogin">KÍCH HOẠT</button>
         <button class="btn btn-secondary" onclick="showScreen('screenGetKey')">📥 NHẬN KEY FREE</button>
-        <div class="sync-status">
-            <span class="dot" id="syncDot"></span>
-            <span id="syncText">Đang kết nối...</span>
-        </div>
         <div class="footer">PROXY VIP VN · DEV · VIETNAM</div>
     </div>
 
@@ -403,50 +159,17 @@
         </div>
         <div class="info-box" style="border-color:#e91e63;">
             <div class="section-title pink">// DANH SÁCH CHỨC NĂNG VIP</div>
-            <div class="toggle-row">
-                <div class="label">TÚ LUNG T... <span class="sub">ĐANG TẮT</span></div>
-                <div class="switch" onclick="toggleFeature('vip', 'tulung')" id="sw_vip_tulung"></div>
-            </div>
-            <div class="toggle-row">
-                <div class="label">SPEED X F... <span class="sub">ĐANG TẮT</span></div>
-                <div class="switch" onclick="toggleFeature('vip', 'speedxf')" id="sw_vip_speedxf"></div>
-            </div>
-            <div class="toggle-row">
-                <div class="label">MOVE PC <span class="sub">ĐANG TẮT</span></div>
-                <div class="switch" onclick="toggleFeature('vip', 'movepc')" id="sw_vip_movepc"></div>
-            </div>
-            <div class="toggle-row">
-                <div class="label">CAMERA H... <span class="sub">ĐANG TẮT</span></div>
-                <div class="switch" onclick="toggleFeature('vip', 'camerah')" id="sw_vip_camerah"></div>
-            </div>
-            <div class="toggle-row">
-                <div class="label">FAKE DAM... <span class="sub">ĐANG TẮT</span></div>
-                <div class="switch" onclick="toggleFeature('vip', 'fakedam')" id="sw_vip_fakedam"></div>
-            </div>
-            <div class="toggle-row">
-                <div class="label">FAST FIRE ... <span class="sub">ĐANG TẮT</span></div>
-                <div class="switch" onclick="toggleFeature('vip', 'fastfire')" id="sw_vip_fastfire"></div>
-            </div>
-            <div class="toggle-row">
-                <div class="label">FAST SWIT... <span class="sub">ĐANG TẮT</span></div>
-                <div class="switch" onclick="toggleFeature('vip', 'fastswit')" id="sw_vip_fastswit"></div>
-            </div>
-            <div class="toggle-row">
-                <div class="label">HIGHT JU... <span class="sub">ĐANG TẮT</span></div>
-                <div class="switch" onclick="toggleFeature('vip', 'hightju')" id="sw_vip_hightju"></div>
-            </div>
-            <div class="toggle-row">
-                <div class="label">SKY WALK <span class="sub">ĐANG TẮT</span></div>
-                <div class="switch" onclick="toggleFeature('vip', 'skywalk')" id="sw_vip_skywalk"></div>
-            </div>
-            <div class="toggle-row">
-                <div class="label">SPEED (C... <span class="sub">ĐANG TẮT</span></div>
-                <div class="switch" onclick="toggleFeature('vip', 'speedc')" id="sw_vip_speedc"></div>
-            </div>
-            <div class="toggle-row">
-                <div class="label">BACKJUM... <span class="sub">ĐANG TẮT</span></div>
-                <div class="switch" onclick="toggleFeature('vip', 'backjum')" id="sw_vip_backjum"></div>
-            </div>
+            <div class="toggle-row"><div class="label">TÚ LUNG T... <span class="sub">ĐANG TẮT</span></div><div class="switch" onclick="toggleFeature('vip', 'tulung')" id="sw_vip_tulung"></div></div>
+            <div class="toggle-row"><div class="label">SPEED X F... <span class="sub">ĐANG TẮT</span></div><div class="switch" onclick="toggleFeature('vip', 'speedxf')" id="sw_vip_speedxf"></div></div>
+            <div class="toggle-row"><div class="label">MOVE PC <span class="sub">ĐANG TẮT</span></div><div class="switch" onclick="toggleFeature('vip', 'movepc')" id="sw_vip_movepc"></div></div>
+            <div class="toggle-row"><div class="label">CAMERA H... <span class="sub">ĐANG TẮT</span></div><div class="switch" onclick="toggleFeature('vip', 'camerah')" id="sw_vip_camerah"></div></div>
+            <div class="toggle-row"><div class="label">FAKE DAM... <span class="sub">ĐANG TẮT</span></div><div class="switch" onclick="toggleFeature('vip', 'fakedam')" id="sw_vip_fakedam"></div></div>
+            <div class="toggle-row"><div class="label">FAST FIRE ... <span class="sub">ĐANG TẮT</span></div><div class="switch" onclick="toggleFeature('vip', 'fastfire')" id="sw_vip_fastfire"></div></div>
+            <div class="toggle-row"><div class="label">FAST SWIT... <span class="sub">ĐANG TẮT</span></div><div class="switch" onclick="toggleFeature('vip', 'fastswit')" id="sw_vip_fastswit"></div></div>
+            <div class="toggle-row"><div class="label">HIGHT JU... <span class="sub">ĐANG TẮT</span></div><div class="switch" onclick="toggleFeature('vip', 'hightju')" id="sw_vip_hightju"></div></div>
+            <div class="toggle-row"><div class="label">SKY WALK <span class="sub">ĐANG TẮT</span></div><div class="switch" onclick="toggleFeature('vip', 'skywalk')" id="sw_vip_skywalk"></div></div>
+            <div class="toggle-row"><div class="label">SPEED (C... <span class="sub">ĐANG TẮT</span></div><div class="switch" onclick="toggleFeature('vip', 'speedc')" id="sw_vip_speedc"></div></div>
+            <div class="toggle-row"><div class="label">BACKJUM... <span class="sub">ĐANG TẮT</span></div><div class="switch" onclick="toggleFeature('vip', 'backjum')" id="sw_vip_backjum"></div></div>
         </div>
         <button class="btn btn-secondary" onclick="changeKey()">🔄 ĐỔI KEY</button>
         <div class="footer">Bạn chỉ cần xác thực 1 lần. IP và thiết bị sẽ bind.</div>
@@ -458,7 +181,7 @@
             <div class="logo">🔧 ADMIN <span>PANEL</span></div>
             <div class="status"><span class="dot"></span>ROOT</div>
         </div>
-        <div class="section-title">// TẠO KEY MỚI (ĐỒNG BỘ SERVER)</div>
+        <div class="section-title">// TẠO KEY MỚI</div>
         <div class="input-group">
             <label>Loại key (1H / 1D / 7D / 30D)</label>
             <input type="text" id="adminKeyType" placeholder="1H" value="1H" maxlength="3">
@@ -469,18 +192,39 @@
             <div class="key-text" id="adminKeyText">----</div>
             <div class="key-hint">Nhấn để sao chép</div>
         </div>
+
+        <button class="btn btn-info" onclick="shareKey()" id="btnShareKey" style="display:none;margin-top:12px;">📤 CHIA SẺ KEY QUA LINK</button>
+        <button class="btn btn-warning" onclick="showQRCode()" id="btnShowQR" style="display:none;margin-top:8px;">📱 HIỆN MÃ QR</button>
+
         <div class="section-title" style="margin-top:20px;">// GỬI LINK VƯỢT</div>
         <div class="input-group">
             <label>Link vượt (dùng để lấy key free)</label>
             <input type="text" id="adminLink" placeholder="https://..." value="">
         </div>
         <button class="btn btn-success" onclick="adminSaveLink()">💾 LƯU LINK</button>
-        <div class="section-title" style="margin-top:20px;">// DANH SÁCH KEY (TẤT CẢ THIẾT BỊ)</div>
+
+        <div class="section-title" style="margin-top:20px;">// DANH SÁCH KEY</div>
         <div class="info-box" id="adminKeyList" style="max-height:200px;overflow-y:auto;">
             <div style="text-align:center;color:#3a4a5a;padding:10px;">Đang tải...</div>
         </div>
-        <button class="btn btn-warning" onclick="adminSyncNow()" style="margin-top:12px;">🔄 ĐỒNG BỘ NGAY</button>
         <button class="btn btn-secondary" onclick="showScreen('screenKey')">← QUAY LẠI</button>
+    </div>
+
+    <!-- SCREEN 5: QR CODE -->
+    <div class="screen" id="screenQR">
+        <div class="header">
+            <div class="logo">📱 MÃ <span>QR</span></div>
+            <div class="status"><span class="dot"></span>SHARE</div>
+        </div>
+        <div class="info-box" style="text-align:center;">
+            <div class="info-title">QUÉT MÃ ĐỂ NHẬN KEY</div>
+            <div id="qrCodeBox" style="padding:20px;background:#fff;border-radius:12px;margin:12px 0;display:inline-block;">
+                <div id="qrCode" style="font-size:0;"></div>
+            </div>
+            <div style="font-size:14px;color:#f1c40f;font-family:monospace;word-break:break-all;margin:10px 0;" id="qrKeyText">----</div>
+            <div style="font-size:12px;color:#6a7f8f;">Dùng camera quét mã để lấy link</div>
+        </div>
+        <button class="btn btn-secondary" onclick="showScreen('screenAdmin')">← QUAY LẠI</button>
     </div>
 </div>
 
@@ -488,21 +232,13 @@
 
 <script>
     // ==================================================
-    // ============ 🔥 CẤU HÌNH FIREBASE ============
-    // ==================================================
-    // ⚠️ THAY URL NÀY BẰNG URL FIREBASE CỦA BẠN
-    // Lấy tại: https://console.firebase.google.com
-    // → Realtime Database → URL
-    const DATABASE_URL = "https://proxyvip-xxxxx-default-rtdb.firebaseio.com";
-
-    // ==================================================
     // ============ ADMIN PASSWORD ============
     // ==================================================
     const ADMIN_PASS = "adminproxyvpn";
 
     let selectedFeatures = { aim: null, vip: null };
     let activeKey = null;
-    let serverOnline = false;
+    let lastGeneratedKey = null;
 
     // ==================================================
     // ============ TOAST ============
@@ -520,124 +256,118 @@
         document.getElementById(id).classList.add('active');
     }
 
-    function updateSyncStatus(online) {
-        const dot = document.getElementById('syncDot');
-        const text = document.getElementById('syncText');
-        if (!dot || !text) return;
-        if (online) {
-            dot.className = 'dot online';
-            text.textContent = '✅ Đã kết nối server - Key dùng chung';
-        } else {
-            dot.className = 'dot offline';
-            text.textContent = '⚠️ Không kết nối server';
-        }
-    }
-
     // ==================================================
-    // ============ FIREBASE REST API ============
+    // ============ KEY STORAGE (LOCAL) ============
     // ==================================================
-    async function firebaseRead(path) {
-        try {
-            const res = await fetch(`${DATABASE_URL}/${path}.json`);
-            if (res.ok) {
-                serverOnline = true;
-                updateSyncStatus(true);
-                const data = await res.json();
-                return data || {};
-            }
-        } catch (e) {
-            console.log('Firebase read error:', e);
-        }
-        serverOnline = false;
-        updateSyncStatus(false);
-        return null;
-    }
-
-    async function firebaseWrite(path, data) {
-        try {
-            const res = await fetch(`${DATABASE_URL}/${path}.json`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-            if (res.ok) {
-                serverOnline = true;
-                updateSyncStatus(true);
-                return true;
-            }
-        } catch (e) {
-            console.log('Firebase write error:', e);
-        }
-        serverOnline = false;
-        updateSyncStatus(false);
-        return false;
-    }
-
-    async function firebasePatch(path, data) {
-        try {
-            const res = await fetch(`${DATABASE_URL}/${path}.json`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-            if (res.ok) {
-                serverOnline = true;
-                updateSyncStatus(true);
-                return true;
-            }
-        } catch (e) {
-            console.log('Firebase patch error:', e);
-        }
-        serverOnline = false;
-        updateSyncStatus(false);
-        return false;
-    }
-
-    // ==================================================
-    // ============ KEY SYNC ============
-    // ==================================================
-    async function loadKeysFromServer() {
-        const data = await firebaseRead('keys');
-        if (data) {
-            localStorage.setItem('proxyvip_keys', JSON.stringify(data));
-            return data;
-        }
-        // Fallback local
+    function getKeys() {
         return JSON.parse(localStorage.getItem('proxyvip_keys') || '{}');
     }
-
-    async function saveKeyToServer(key, keyData) {
-        // Lưu local
-        const localKeys = JSON.parse(localStorage.getItem('proxyvip_keys') || '{}');
-        localKeys[key] = keyData;
-        localStorage.setItem('proxyvip_keys', JSON.stringify(localKeys));
-
-        // Lưu lên server
-        const success = await firebasePatch('keys', { [key]: keyData });
-        if (success) {
-            console.log('✅ Đã lưu key lên server:', key);
-        } else {
-            console.log('⚠️ Chỉ lưu local (server offline)');
-        }
-        return success;
+    function saveKeys(data) {
+        localStorage.setItem('proxyvip_keys', JSON.stringify(data));
+    }
+    function saveKey(key, data) {
+        const keys = getKeys();
+        keys[key] = data;
+        saveKeys(keys);
     }
 
-    async function deleteKeyFromServer(key) {
-        // Xóa local
-        const localKeys = JSON.parse(localStorage.getItem('proxyvip_keys') || '{}');
-        delete localKeys[key];
-        localStorage.setItem('proxyvip_keys', JSON.stringify(localKeys));
+    // ==================================================
+    // ============ SHARE KEY QUA LINK ============
+    // ==================================================
+    function encodeKey(key) {
+        // Mã hóa key thành chuỗi an toàn cho URL
+        return btoa(key).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+    }
 
-        // Xóa trên server
+    function decodeKey(encoded) {
         try {
-            await fetch(`${DATABASE_URL}/keys/${key}.json`, { method: 'DELETE' });
-        } catch (e) {}
+            let s = encoded.replace(/-/g, '+').replace(/_/g, '/');
+            while (s.length % 4) s += '=';
+            return atob(s);
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function createShareLink(key) {
+        const encoded = encodeKey(key);
+        // Lấy URL hiện tại (bỏ query cũ)
+        let baseUrl = window.location.href.split('?')[0].split('#')[0];
+        return baseUrl + '?key=' + encoded;
+    }
+
+    function shareKey() {
+        if (!lastGeneratedKey) {
+            showToast('⚠️ Chưa có key để chia sẻ!', 'error');
+            return;
+        }
+
+        const link = createShareLink(lastGeneratedKey);
+        
+        if (navigator.share) {
+            navigator.share({
+                title: 'PROXY VIP VN - Key',
+                text: 'Key của bạn: ' + lastGeneratedKey,
+                url: link
+            }).catch(() => {});
+        } else if (navigator.clipboard) {
+            navigator.clipboard.writeText(link).then(() => {
+                showToast('✅ Đã sao chép link chia sẻ!', 'success');
+            });
+        } else {
+            prompt('Copy link này để chia sẻ:', link);
+        }
+    }
+
+    // ==================================================
+    // ============ QR CODE (dùng API ngoài) ============
+    // ==================================================
+    function showQRCode() {
+        if (!lastGeneratedKey) {
+            showToast('⚠️ Chưa có key!', 'error');
+            return;
+        }
+
+        const link = createShareLink(lastGeneratedKey);
+        document.getElementById('qrKeyText').textContent = lastGeneratedKey;
+
+        // Dùng API tạo QR miễn phí
+        const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(link);
+        document.getElementById('qrCode').innerHTML = `<img src="${qrUrl}" style="width:200px;height:200px;display:block;" alt="QR Code">`;
+
+        showScreen('screenQR');
+    }
+
+    // ==================================================
+    // ============ ĐỌC KEY TỪ URL ============
+    // ==================================================
+    function checkURLForKey() {
+        const params = new URLSearchParams(window.location.search);
+        const encoded = params.get('key');
+        if (encoded) {
+            const key = decodeKey(encoded);
+            if (key) {
+                // Tự động nhập key vào ô input
+                document.getElementById('inputKey').value = key;
+                showToast('✅ Đã nhận key từ link: ' + key, 'success');
+                
+                // Tự động kích hoạt
+                setTimeout(() => {
+                    doLogin();
+                }, 1000);
+                
+                // Xóa query param khỏi URL
+                if (window.history.replaceState) {
+                    window.history.replaceState({}, '', window.location.pathname);
+                }
+            }
+        }
     }
 
     // ==================================================
     // ============ LOGIN ============
     // ==================================================
-    async function doLogin() {
+    function doLogin() {
         const key = document.getElementById('inputKey').value.trim().toUpperCase();
         if (!key) {
             showToast('⚠️ Vui lòng nhập key!', 'error');
@@ -647,7 +377,7 @@
         // Admin
         if (key === ADMIN_PASS.toUpperCase()) {
             showScreen('screenAdmin');
-            await renderAdminKeyList();
+            renderAdminKeyList();
             showToast('✅ Đã vào Admin Panel!', 'success');
             return;
         }
@@ -656,43 +386,41 @@
         btn.disabled = true;
         btn.innerHTML = '<span class="loading"></span> ĐANG KIỂM TRA...';
 
-        // Load key từ server
-        const keys = await loadKeysFromServer();
-        const found = keys[key];
+        setTimeout(() => {
+            const keys = getKeys();
+            const found = keys[key];
 
-        btn.disabled = false;
-        btn.textContent = 'KÍCH HOẠT';
+            btn.disabled = false;
+            btn.textContent = 'KÍCH HOẠT';
 
-        if (!found) {
-            showToast('❌ Key không tồn tại!', 'error');
-            return;
-        }
+            if (!found) {
+                showToast('❌ Key không tồn tại!', 'error');
+                return;
+            }
 
-        if (found.expire < Date.now()) {
-            showToast('⏰ Key đã hết giờ!', 'error');
-            return;
-        }
+            if (found.expire < Date.now()) {
+                showToast('⏰ Key đã hết giờ!', 'error');
+                return;
+            }
 
-        // Success - cập nhật activeDate
-        found.activeDate = Date.now();
-        await saveKeyToServer(key, found);
+            // Success
+            found.activeDate = Date.now();
+            saveKey(key, found);
 
-        activeKey = key;
-        localStorage.setItem('current_key', key);
-        localStorage.setItem('current_key_expire', found.expire);
+            activeKey = key;
+            localStorage.setItem('current_key', key);
+            localStorage.setItem('current_key_expire', found.expire);
 
-        document.getElementById('fKey').textContent = key;
-        document.getElementById('fStatus').textContent = 'ACTIVE';
-        document.getElementById('fActiveDate').textContent = formatDate(found.activeDate);
-        document.getElementById('fExpire').textContent = formatDate(found.expire);
+            document.getElementById('fKey').textContent = key;
+            document.getElementById('fStatus').textContent = 'ACTIVE';
+            document.getElementById('fActiveDate').textContent = formatDate(found.activeDate);
+            document.getElementById('fExpire').textContent = formatDate(found.expire);
 
-        showScreen('screenFeatures');
-        showToast('✅ Kích hoạt thành công!', 'success');
+            showScreen('screenFeatures');
+            showToast('✅ Kích hoạt thành công!', 'success');
+        }, 800);
     }
 
-    // ==================================================
-    // ============ CHANGE KEY ============
-    // ==================================================
     function changeKey() {
         if (confirm('🔄 Đổi key khác?')) {
             localStorage.removeItem('current_key');
@@ -739,24 +467,20 @@
     function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 
     function getFeatureName(name) {
-        const map = {
-            body: 'Aim body', drag: 'Aim drag', magic: 'Aim magic',
+        const map = { body: 'Aim body', drag: 'Aim drag', magic: 'Aim magic',
             tulung: 'Tú lung tung', speedxf: 'Speed X F', movepc: 'Move PC',
             camerah: 'Camera H', fakedam: 'Fake Dam', fastfire: 'Fast Fire',
             fastswit: 'Fast Swit', hightju: 'Hight Ju', skywalk: 'Sky Walk',
-            speedc: 'Speed C', backjum: 'Backjum'
-        };
+            speedc: 'Speed C', backjum: 'Backjum' };
         return map[name] || name;
     }
 
     // ==================================================
     // ============ GET FREE KEY ============
     // ==================================================
-    async function getFreeKey() {
-        const adminLink = await firebaseRead('adminLink');
-        const link = adminLink || localStorage.getItem('admin_link');
-
-        if (!link) {
+    function getFreeKey() {
+        const adminLink = localStorage.getItem('admin_link');
+        if (!adminLink) {
             showToast('❌ Admin chưa tạo link vượt. Không thể lấy key!', 'error');
             return;
         }
@@ -765,42 +489,37 @@
         btn.disabled = true;
         btn.innerHTML = '<span class="loading"></span> ĐANG LẤY KEY...';
 
-        const newKey = generateKeyString('1H');
-        const expire = Date.now() + 60 * 60 * 1000;
+        setTimeout(() => {
+            const newKey = generateKeyString('1H');
+            const expire = Date.now() + 60 * 60 * 1000;
 
-        const keyData = {
-            key: newKey,
-            expire: expire,
-            type: '1H',
-            activeDate: null,
-            free: true,
-            createdOn: getDeviceId(),
-            created: Date.now()
-        };
+            saveKey(newKey, {
+                key: newKey, expire: expire, type: '1H',
+                activeDate: null, free: true, created: Date.now()
+            });
 
-        await saveKeyToServer(newKey, keyData);
+            document.getElementById('freeKeyResult').classList.add('show');
+            document.getElementById('freeKeyText').textContent = newKey;
 
-        document.getElementById('freeKeyResult').classList.add('show');
-        document.getElementById('freeKeyText').textContent = newKey;
+            const todayCount = parseInt(localStorage.getItem('today_count') || '0') + 1;
+            const ipCount = parseInt(localStorage.getItem('ip_count') || '0') + 1;
+            localStorage.setItem('today_count', todayCount);
+            localStorage.setItem('ip_count', ipCount);
 
-        const todayCount = parseInt(localStorage.getItem('today_count') || '0') + 1;
-        const ipCount = parseInt(localStorage.getItem('ip_count') || '0') + 1;
-        localStorage.setItem('today_count', todayCount);
-        localStorage.setItem('ip_count', ipCount);
+            document.getElementById('todayCount').textContent = todayCount + ' / 3000';
+            document.getElementById('ipCount').textContent = ipCount + ' / 2';
 
-        document.getElementById('todayCount').textContent = todayCount + ' / 3000';
-        document.getElementById('ipCount').textContent = ipCount + ' / 2';
-
-        btn.disabled = false;
-        btn.textContent = '📥 LẤY KEY FREE';
-        showToast('✅ Lấy key thành công! Dùng được trên máy khác', 'success');
+            btn.disabled = false;
+            btn.textContent = '📥 LẤY KEY FREE';
+            showToast('✅ Lấy key thành công!', 'success');
+        }, 1000);
     }
 
     document.getElementById('freeKeyResult').addEventListener('click', function() {
         const key = document.getElementById('freeKeyText').textContent;
         if (key && key !== '----') {
             navigator.clipboard.writeText(key).then(() => {
-                showToast('✅ Đã sao chép key!', 'success');
+                showToast('✅ Đã sao chép!', 'success');
             });
         }
     });
@@ -819,19 +538,10 @@
         return type + '-' + s1 + '-' + s2 + '-' + s3;
     }
 
-    function getDeviceId() {
-        let id = localStorage.getItem('device_id');
-        if (!id) {
-            id = 'DEV-' + Math.random().toString(36).substring(2, 10).toUpperCase();
-            localStorage.setItem('device_id', id);
-        }
-        return id;
-    }
-
     // ==================================================
     // ============ ADMIN ============
     // ==================================================
-    async function adminGenerateKey() {
+    function adminGenerateKey() {
         const type = document.getElementById('adminKeyType').value.trim().toUpperCase() || '1H';
         const validTypes = ['1H', '1D', '7D', '30D'];
         if (!validTypes.includes(type)) {
@@ -847,50 +557,35 @@
 
         const expire = Date.now() + hours * 60 * 60 * 1000;
 
-        const keyData = {
-            key: key,
-            expire: expire,
-            type: type,
-            activeDate: null,
-            created: Date.now(),
-            createdBy: getDeviceId()
-        };
+        saveKey(key, {
+            key: key, expire: expire, type: type,
+            activeDate: null, created: Date.now()
+        });
 
-        const success = await saveKeyToServer(key, keyData);
+        lastGeneratedKey = key;
 
         document.getElementById('adminKeyResult').classList.add('show');
         document.getElementById('adminKeyText').textContent = key;
+        document.getElementById('btnShareKey').style.display = 'block';
+        document.getElementById('btnShowQR').style.display = 'block';
 
-        await renderAdminKeyList();
-        
-        if (success) {
-            showToast('✅ Đã tạo + lưu server: ' + key, 'success');
-        } else {
-            showToast('⚠️ Key đã tạo (chỉ lưu local)', 'info');
-        }
+        renderAdminKeyList();
+        showToast('✅ Đã tạo key: ' + key, 'success');
     }
 
-    async function adminSaveLink() {
+    function adminSaveLink() {
         const link = document.getElementById('adminLink').value.trim();
         if (!link) {
             showToast('⚠️ Vui lòng nhập link!', 'error');
             return;
         }
         localStorage.setItem('admin_link', link);
-        const success = await firebaseWrite('adminLink', link);
-
-        if (success) {
-            showToast('✅ Đã lưu link lên server!', 'success');
-        } else {
-            showToast('⚠️ Link lưu local (server lỗi)', 'error');
-        }
+        showToast('✅ Đã lưu link vượt!', 'success');
     }
 
-    async function renderAdminKeyList() {
+    function renderAdminKeyList() {
+        const keys = getKeys();
         const list = document.getElementById('adminKeyList');
-        list.innerHTML = '<div style="text-align:center;color:#3a4a5a;padding:10px;">Đang tải từ server...</div>';
-
-        const keys = await loadKeysFromServer();
         const keyArray = Object.values(keys);
 
         if (keyArray.length === 0) {
@@ -898,7 +593,6 @@
             return;
         }
 
-        // Sắp xếp key mới nhất lên đầu
         keyArray.sort((a, b) => (b.created || 0) - (a.created || 0));
 
         list.innerHTML = keyArray.map(item => {
@@ -909,6 +603,7 @@
                     <span style="color:#f1c40f;font-family:monospace;">${item.key}</span>
                     <span style="color:${valid ? '#2ecc71' : '#e63946'};display:flex;align-items:center;gap:6px;">
                         ${valid ? remaining : 'Hết hạn'}
+                        <button onclick="shareSpecificKey('${item.key}')" style="background:none;border:none;color:#00d4ff;cursor:pointer;font-size:14px;padding:0 4px;">📤</button>
                         <button onclick="deleteKey('${item.key}')" style="background:none;border:none;color:#e63946;cursor:pointer;font-size:14px;padding:0 4px;">✕</button>
                     </span>
                 </div>
@@ -916,21 +611,31 @@
         }).join('');
     }
 
-    async function deleteKey(key) {
-        if (confirm('Xóa key ' + key + '?')) {
-            await deleteKeyFromServer(key);
-            await renderAdminKeyList();
-            showToast('🗑️ Đã xóa key', 'success');
+    function shareSpecificKey(key) {
+        const link = createShareLink(key);
+        if (navigator.share) {
+            navigator.share({
+                title: 'PROXY VIP VN',
+                text: 'Key: ' + key,
+                url: link
+            }).catch(() => {});
+        } else if (navigator.clipboard) {
+            navigator.clipboard.writeText(link).then(() => {
+                showToast('✅ Đã sao chép link!', 'success');
+            });
+        } else {
+            prompt('Copy link:', link);
         }
     }
 
-    async function adminSyncNow() {
-        showToast('🔄 Đang đồng bộ...', 'info');
-        await loadKeysFromServer();
-        await renderAdminKeyList();
-        const adminLink = await firebaseRead('adminLink');
-        if (adminLink) document.getElementById('adminLink').value = adminLink;
-        showToast('✅ Đã đồng bộ!', 'success');
+    function deleteKey(key) {
+        if (confirm('Xóa key ' + key + '?')) {
+            const keys = getKeys();
+            delete keys[key];
+            saveKeys(keys);
+            renderAdminKeyList();
+            showToast('🗑️ Đã xóa', 'success');
+        }
     }
 
     // ==================================================
@@ -960,24 +665,16 @@
     // ==================================================
     // ============ INIT ============
     // ==================================================
-    window.addEventListener('load', async function() {
-        // Load key từ server
-        await loadKeysFromServer();
-
-        // Kiểm tra kết nối
-        const test = await firebaseRead('test');
-        if (!serverOnline) {
-            showToast('⚠️ Không kết nối server! Key chỉ lưu local', 'error');
-        } else {
-            showToast('✅ Đã kết nối server - Key dùng chung', 'success');
-        }
+    window.addEventListener('load', function() {
+        // Kiểm tra URL có key không
+        checkURLForKey();
 
         // Khôi phục key đang dùng
         const savedKey = localStorage.getItem('current_key');
         const savedExpire = parseInt(localStorage.getItem('current_key_expire') || '0');
         if (savedKey && savedExpire > Date.now()) {
             activeKey = savedKey;
-            const keys = JSON.parse(localStorage.getItem('proxyvip_keys') || '{}');
+            const keys = getKeys();
             const data = keys[savedKey];
             if (data) {
                 document.getElementById('fKey').textContent = savedKey;
@@ -993,12 +690,9 @@
         document.getElementById('ipCount').textContent = (localStorage.getItem('ip_count') || '0') + ' / 2';
 
         // Admin link
-        const adminLink = await firebaseRead('adminLink');
-        if (adminLink) {
-            localStorage.setItem('admin_link', adminLink);
-            if (document.getElementById('adminLink')) {
-                document.getElementById('adminLink').value = adminLink;
-            }
+        const adminLink = localStorage.getItem('admin_link');
+        if (adminLink && document.getElementById('adminLink')) {
+            document.getElementById('adminLink').value = adminLink;
         }
 
         // Enter login
@@ -1016,9 +710,8 @@
             }
         });
 
-        console.log('🚀 PROXY VIP VN - Firebase Sync');
+        console.log('🚀 PROXY VIP VN - Share Link System');
         console.log('🔐 Admin pass:', ADMIN_PASS);
-        console.log('📡 Server:', serverOnline ? 'ONLINE' : 'OFFLINE');
     });
 
     document.addEventListener('contextmenu', e => e.preventDefault());
