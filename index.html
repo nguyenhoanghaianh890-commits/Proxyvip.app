@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<title>Cheat Proxy VIP - Kích hoạt key</title>
+<link href="base.css" rel="stylesheet"/>
+<link href="public.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="activate-shell">
+<!-- Header -->
+<div class="app-header">
+<div class="brand-block">
+<div class="brand-logo">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M12 2 4 6v6c0 5.4 3.4 10.2 8 10 4.6.2 8-4.6 8-10V6l-8-4z"></path><path d="m9 12 2 2 4-4"></path></svg>
+</div>
+<div class="brand-divider"></div>
+<div class="brand-text">
+<div class="brand-title">CHEAT PROXY <span class="brand-vip">VIP</span></div>
+<div class="brand-sub">
+<span class="led-dot"></span>
+<span>v2 · cyber edition</span>
+</div>
+</div>
+</div>
+<div class="status-pill">
+<span class="led-dot green"></span>
+<span class="status-text">ONLINE</span>
+</div>
+</div>
+<div class="activate-card">
+<!-- IP row -->
+<div class="meta-row">
+<span class="live">IP: <span class="ip" id="clientIp">--</span></span>
+<span>Server: <span id="serverTime">--:--:--</span></span>
+</div>
+<!-- 3 tabs -->
+<div class="tab-bar" role="tablist">
+<div class="tab active" data-pane="activate" role="tab">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+        Kích hoạt
+      </div>
+<div class="tab" data-pane="lookup" role="tab">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+        Tra cứu
+      </div>
+<div class="tab" data-pane="history" role="tab">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        Lịch sử
+      </div>
+</div>
+<!-- TAB 1: KÍCH HOẠT -->
+<div class="tab-panes active" data-pane="activate">
+<div class="step-row">
+<div class="step active" data-step="1"><div class="num">1</div><span>Nhập key</span></div>
+<div class="step" data-step="2"><div class="num">2</div><span>Xác thực</span></div>
+<div class="step" data-step="3"><div class="num">3</div><span>Active</span></div>
+</div>
+<form id="activateForm">
+<div class="field">
+<input autocapitalize="characters" autocomplete="off" id="licenseInput" maxlength="32" placeholder=" " required=""/>
+<span class="placeholder">// Nhập key của bạn (ví dụ AAAA-BBBBB-CCCC)</span>
+<span class="scan-line"></span>
+</div>
+<button class="btn activate-btn" id="submitBtn" type="submit">KÍCH HOẠT NGAY</button>
+</form>
+<div class="result-panel" id="activateResult">
+<div class="row-head">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="20"><circle cx="12" cy="12" r="10"></circle><path d="M8 12l3 3 5-6"></path></svg>
+<span id="arTitle">KEY ĐANG HOẠT ĐỘNG</span>
+</div>
+<div class="msg" id="arMsg"></div>
+<div class="grid">
+<div><span>Trạng thái</span><span id="arStatus">--</span></div>
+<div><span>Ngày active</span><span id="arCreated">--</span></div>
+<div><span>Hết hạn</span><span id="arExpires">--</span></div>
+</div>
+<!-- Danh sách máy chủ (hiển thị sau khi active) -->
+<div class="server-list hidden" id="arServers">
+<div class="server-list-head">
+<span class="server-list-eyebrow">// Danh sách máy chủ</span>
+<span class="server-list-count" id="arServerCount">0 máy chủ</span>
+</div>
+<div id="arServerItems"></div>
+<div class="server-list-empty hidden" id="arServerEmpty">
+            Chưa có máy chủ nào được gán cho key này. Liên hệ admin để được cấp.
+          </div>
+</div>
+<!-- Download mitmproxy CA cert so client can trust the TLS intercept -->
+<div class="cert-tile hidden" id="arCertTile">
+<div aria-hidden="true" class="cert-tile-icon">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 2 4 6v6c0 5.4 3.4 10.2 8 10 4.6.2 8-4.6 8-10V6l-8-4z"></path>
+<path d="m9 12 2 2 4-4"></path>
+</svg>
+</div>
+<div class="cert-tile-body">
+<div class="cert-tile-title">Chứng chỉ mitmproxy</div>
+</div>
+<button aria-label="Tải chứng chỉ mitmproxy" class="btn-cert-download" id="arCertDownloadBtn" type="button">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+<polyline points="7 10 12 15 17 10"></polyline>
+<line x1="12" x2="12" y1="15" y2="3"></line>
+</svg>
+<span>Tải xuống</span>
+</button>
+</div>
+<div class="shield-tile">
+<svg class="shield-tile-icon" fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22">
+<defs>
+<lineargradient id="shieldGrad" x1="0" x2="1" y1="0" y2="1">
+<stop offset="0%" stop-color="#00eaff"></stop>
+<stop offset="100%" stop-color="#b14cff"></stop>
+</lineargradient>
+</defs>
+<path d="M12 2 4 6v6c0 5.4 3.4 10.2 8 10 4.6.2 8-4.6 8-10V6l-8-4z" stroke="url(#shieldGrad)"></path>
+<path d="m9 12 2 2 4-4" stroke="url(#shieldGrad)" stroke-width="2.4"></path>
+<circle cx="12" cy="12" opacity="0.6" r="11" stroke="url(#shieldGrad)" stroke-dasharray="2 3" stroke-width="0.6"></circle>
+</svg>
+<span>Bạn chỉ cần xác thực 1 lần. IP và thiết bị sẽ tự động bind trong <b id="arDuration">--</b>.</span>
+</div>
+</div>
+</div>
+<!-- TAB 2: TRA CỨU -->
+<div class="tab-panes" data-pane="lookup">
+<div class="step-row">
+<div class="step active" data-step="1"><div class="num">1</div><span>Nhập key</span></div>
+<div class="step" data-step="2"><div class="num">2</div><span>Tra cứu</span></div>
+<div class="step" data-step="3"><div class="num">3</div><span>Xem kết quả</span></div>
+</div>
+<div class="sub-label">// Key đang được truy vấn</div>
+<form id="lookupForm">
+<div class="field">
+<input autocapitalize="characters" autocomplete="off" id="lookupInput" maxlength="32" placeholder=" " required=""/>
+<span class="placeholder">// Nhập key cần tra cứu</span>
+<span class="scan-line"></span>
+</div>
+<button class="btn activate-btn" id="lookupBtn" type="submit">TRA CỨU THÔNG TIN</button>
+</form>
+<div class="result-panel" id="lookupResult">
+<div class="row-head">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="20"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+<span id="lkTitle">THÔNG TIN KEY</span>
+</div>
+<div class="msg" id="lkMsg"></div>
+<div class="grid">
+<div><span>Trạng thái</span><span id="lkStatus">--</span></div>
+<div><span>Thời hạn</span><span id="lkDuration">--</span></div>
+<div><span>Ngày active</span><span id="lkCreated">--</span></div>
+<div><span>Hết hạn</span><span id="lkExpires">--</span></div>
+<div style="grid-column: span 2;"><span>IP đã whitelist</span><span id="lkIp">--</span></div>
+</div>
+<div class="shield-tile">
+<svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+<span>Key mới cần kích hoạt trước tại tab <b>Kích hoạt</b> để bind thiết bị / IP.</span>
+</div>
+</div>
+</div>
+<!-- TAB 3: LỊCH SỬ -->
+<div class="tab-panes" data-pane="history">
+<div class="step-row">
+<div class="step active" data-step="1"><div class="num">1</div><span>Lấy dữ liệu</span></div>
+<div class="step" data-step="2"><div class="num">2</div><span>So sánh</span></div>
+<div class="step" data-step="3"><div class="num">3</div><span>Xem chi tiết</span></div>
+</div>
+<div class="sub-label">// 5 lần kích hoạt gần nhất của key</div>
+<form id="historyForm">
+<div class="field">
+<input autocapitalize="characters" autocomplete="off" id="historyInput" maxlength="32" placeholder=" " required=""/>
+<span class="placeholder">// Nhập key cần xem lịch sử</span>
+<span class="scan-line"></span>
+</div>
+<button class="btn activate-btn" id="historyBtn" type="submit">XEM LỊCH SỬ</button>
+</form>
+<div class="result-panel" id="historyResult">
+<div class="row-head">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="20"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+<span id="hsTitle">LỊCH SỬ KÍCH HOẠT</span>
+</div>
+<div class="msg" id="hsMsg"></div>
+<div class="history-card">
+<div class="history-row"><span>Thời gian</span><span>IP</span><span>Trạng thái</span></div>
+<div id="historyList"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Announcement modal -->
+<div class="announcement-overlay" id="annOverlay">
+<div aria-labelledby="annTitle" aria-modal="true" class="announcement-card" role="dialog">
+<div class="ann-head">
+<div aria-hidden="true" class="ann-icon">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M3 11l18-5v12L3 14v-3z"></path>
+<path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path>
+</svg>
+</div>
+<div class="ann-head-text">
+<div class="ann-eyebrow">// Thông báo hệ thống</div>
+<h3 id="annTitle">--</h3>
+</div>
+</div>
+<div class="ann-body">
+<p id="annBody">--</p>
+<div class="ann-meta">
+<span id="annMeta"></span>
+<span id="annPager"></span>
+</div>
+</div>
+<div class="ann-actions">
+<button class="btn-ann btn-ann-close" id="annClose" type="button">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" viewbox="0 0 24 24">
+<path d="M18 6 6 18M6 6l12 12"></path>
+</svg>
+          Đóng
+        </button>
+<button class="btn-ann btn-ann-snooze" id="annDismiss" type="button">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24">
+<circle cx="12" cy="13" r="8"></circle>
+<path d="M12 9v4l2 2"></path>
+<path d="M9 2h6"></path>
+</svg>
+          Đóng 2 giờ
+        </button>
+</div>
+</div>
+</div>
+<div class="popup" id="popup"></div>
+</div>
+<script src="fingerprint.js" type="module"></script>
+<script type="module">
+import { getDeviceFingerprint } from "/static/js/fingerprint.js";
+
+const $ = (id) => document.getElementById(id);
+const popup = $("popup");
+const tabs = document.querySelectorAll(".tab-bar .tab");
+const panes = document.querySelectorAll(".tab-panes");
+let currentIp = null;
+
+function setActiveStep(pane, idx) {
+  const steps = pane.querySelectorAll(".step-row .step");
+  steps.forEach((s, i) => {
+    s.classList.toggle("active", i === idx);
+    s.classList.toggle("done", i < idx);
+  });
+}
+
+function showTab(name) {
+  tabs.forEach((t) => t.classList.toggle("active", t.dataset.pane === name));
+  panes.forEach((p) => p.classList.toggle("active", p.dataset.pane === name));
+  panes.forEach((p) => setActiveStep(p, 0));
+}
+tabs.forEach((t) => t.addEventListener("click", () => showTab(t.dataset.pane)));
+
+async function fetchIp() {
+  try {
+    const r = await fetch("/whoami");
+    const d = await r.json();
+    currentIp = d.ip;
+    $("clientIp").textContent = d.ip || "--";
+  } catch (e) { $("clientIp").textContent = "n/a"; }
+}
+function tickClock() {
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  $("serverTime").textContent = pad(now.getHours()) + ":" + pad(now.getMinutes()) + ":" + pad(now.getSeconds());
+}
+setInterval(tickClock, 1000); tickClock();
+
+function showPopup(text, isError = true) {
+  popup.textContent = text;
+  popup.classList.remove("show", "ok", "err");
+  void popup.offsetWidth;
+  popup.classList.add("show", isError ? "err" : "ok");
+  clearTimeout(window.__cpvPopup);
+  window.__cpvPopup = setTimeout(() => popup.classList.remove("show"), 3500);
+}
+
+function hideServerList() {
+  const wrap = $("arServers");
+  if (wrap) wrap.classList.add("hidden");
+  const items = $("arServerItems");
+  if (items) items.innerHTML = "";
+}
+
+function hideCertTile() {
+  const tile = $("arCertTile");
+  if (tile) tile.classList.add("hidden");
+}
+
+function renderCertTile(meta) {
+  const tile = $("arCertTile");
+  if (!tile) return;
+  if (!meta || !meta.has_cert) { hideCertTile(); return; }
+  const name = $("arCertName");
+  const sha = $("arCertSha");
+  const btn = $("arCertDownloadBtn");
+  if (name) name.textContent = meta.filename || "mitmproxy-ca-cert.pem";
+  if (sha) {
+    const h = meta.sha256 || "";
+    sha.textContent = h ? (h.slice(0, 6) + "…" + h.slice(-6)) : "--";
+    sha.title = h || "";
+  }
+  if (btn) {
+    btn.onclick = () => {
+      try { window.location.href = "/api/mitm-cert/download"; } catch (_) {}
+    };
+  }
+  tile.classList.remove("hidden");
+}
+
+async function loadCertForClient() {
+  try {
+    const r = await fetch("/api/mitm-cert/info");
+    if (!r.ok) return hideCertTile();
+    const d = await r.json();
+    renderCertTile(d);
+  } catch (_) {
+    hideCertTile();
+  }
+}
+
+function renderServerList(aims) {
+  const wrap = $("arServers");
+  const itemsHost = $("arServerItems");
+  const emptyEl = $("arServerEmpty");
+  const countEl = $("arServerCount");
+  if (!wrap || !itemsHost) return;
+  const list = Array.isArray(aims) ? aims : [];
+  if (countEl) countEl.textContent = list.length + (list.length === 1 ? " máy chủ" : " máy chủ");
+  if (!list.length) {
+    if (emptyEl) emptyEl.classList.remove("hidden");
+    wrap.classList.remove("hidden");
+    return;
+  }
+  if (emptyEl) emptyEl.classList.add("hidden");
+  renderServerListInto(itemsHost, list);
+  wrap.classList.remove("hidden");
+}
+
+async function copyText(text) {
+  if (!text) return false;
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch (_) {}
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  } catch (_) {
+    return false;
+  }
+}
+
+function escapeHtml(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+function tsLabel(t) {
+  if (!t) return "--";
+  try { return new Date(t * 1000).toLocaleString("vi-VN"); } catch (_) { return "--"; }
+}
+
+$("activateForm").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const key = ($("licenseInput").value || "").trim();
+  const pane = document.querySelector('.tab-panes[data-pane="activate"]');
+  if (!key) { showPopup("Vui lòng nhập key.", true); return; }
+  if (!currentIp) { showPopup("Không lấy được IP. Thử lại.", true); return; }
+  setActiveStep(pane, 1);
+  $("submitBtn").disabled = true;
+  $("submitBtn").textContent = "ĐANG XÁC THỰC...";
+  try {
+    const fp = await getDeviceFingerprint();
+    const res = await fetch("/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ip: currentIp, key, device_id: fp }),
+    });
+    const data = await res.json();
+    setActiveStep(pane, 2);
+    if (res.ok) {
+      showPopup(data.message || "Kích hoạt thành công.", false);
+      setActiveStep(pane, 3);
+      $("arTitle").textContent = "KÍCH HOẠT THÀNH CÔNG";
+      $("arMsg").textContent = "Key đã bind IP " + currentIp + " và thiết bị của bạn.";
+      $("arStatus").innerHTML = '<span class="badge ok">active</span>';
+      $("arCreated").textContent = tsLabel(Math.floor(Date.now() / 1000));
+      $("arExpires").textContent = tsLabel(data.expires_at);
+      $("arDuration").textContent = data.duration || "thời hạn key";
+      renderServerList(data.aims || []);
+      loadCertForClient();
+      $("activateResult").classList.remove("err");
+      $("activateResult").classList.add("show");
+      try { localStorage.setItem("cpv_key", key); } catch (_) {}
+    } else {
+      showPopup(data.message || "Key không hợp lệ.", true);
+      $("arTitle").textContent = "KÍCH HOẠT THẤT BẠI";
+      $("arMsg").textContent = data.message || "Vui lòng kiểm tra lại key.";
+      hideServerList();
+      hideCertTile();
+      $("activateResult").classList.add("err", "show");
+    }
+  } catch (e) {
+    showPopup("Lỗi gửi yêu cầu.", true);
+  } finally {
+    $("submitBtn").disabled = false;
+    $("submitBtn").textContent = "KÍCH HOẠT NGAY";
+  }
+});
+
+$("lookupForm").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const key = ($("lookupInput").value || "").trim();
+  const pane = document.querySelector('.tab-panes[data-pane="lookup"]');
+  if (!key) { showPopup("Nhập key cần tra cứu.", true); return; }
+  setActiveStep(pane, 1);
+  $("lookupBtn").disabled = true;
+  $("lookupBtn").textContent = "ĐANG TRA CỨU...";
+  try {
+    const r = await fetch("/api/key-status?key=" + encodeURIComponent(key));
+    const d = await r.json();
+    setActiveStep(pane, 2);
+    if (r.ok && d.active) {
+      setActiveStep(pane, 3);
+      $("lkTitle").textContent = "TRA CỨU THÀNH CÔNG";
+      $("lkMsg").textContent = "Key hợp lệ và đang hoạt động.";
+      $("lkStatus").innerHTML = '<span class="badge ok">' + (d.status || "active") + '</span>';
+      $("lkDuration").textContent = (d.duration || "--").toUpperCase();
+      $("lkCreated").textContent = tsLabel(d.created_ts || (d.created_at ? Math.floor(new Date(d.created_at).getTime() / 1000) : null));
+      $("lkExpires").textContent = tsLabel(d.expires_at);
+      $("lkIp").textContent = d.ip_whitelisted ? currentIp + " (active)" : "Chưa bind - kích hoạt trước.";
+      $("lookupResult").classList.remove("err");
+      $("lookupResult").classList.add("show");
+    } else {
+      setActiveStep(pane, 3);
+      $("lkTitle").textContent = "KHÔNG TÌM THẤY";
+      $("lkMsg").textContent = (d && d.message) || "Key không tồn tại.";
+      $("lkStatus").textContent = "--";
+      $("lkDuration").textContent = "--";
+      $("lkCreated").textContent = "--";
+      $("lkExpires").textContent = "--";
+      $("lkIp").textContent = "--";
+      $("lookupResult").classList.add("err", "show");
+    }
+  } catch (e) {
+    showPopup("Lỗi tra cứu.", true);
+  } finally {
+    $("lookupBtn").disabled = false;
+    $("lookupBtn").textContent = "TRA CỨU THÔNG TIN";
+  }
+});
+
+$("historyForm").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const key = ($("historyInput").value || "").trim();
+  const pane = document.querySelector('.tab-panes[data-pane="history"]');
+  if (!key) { showPopup("Nhập key cần xem lịch sử.", true); return; }
+  setActiveStep(pane, 1);
+  $("historyBtn").disabled = true;
+  $("historyBtn").textContent = "ĐANG LẤY...";
+  try {
+    const r = await fetch("/api/key-history?key=" + encodeURIComponent(key));
+    let items = [];
+    if (r.ok) {
+      const d = await r.json();
+      items = (d && d.items) || [];
+    }
+    setActiveStep(pane, 2);
+    setActiveStep(pane, 3);
+    const list = $("historyList");
+    list.innerHTML = "";
+    if (!items.length) {
+      $("hsTitle").textContent = "CHƯA CÓ LỊCH SỬ";
+      $("hsMsg").textContent = "Key này chưa được kích hoạt lần nào.";
+      const empty = document.createElement("div");
+      empty.className = "history-empty";
+      empty.textContent = "Chưa có lần kích hoạt nào được ghi nhận.";
+      list.appendChild(empty);
+    } else {
+      $("hsTitle").textContent = "LỊCH SỬ KÍCH HOẠT";
+      $("hsMsg").textContent = "Đã tìm thấy " + items.length + " lần kích hoạt.";
+      items.forEach((it) => {
+        const row = document.createElement("div");
+        row.className = "history-row";
+        row.innerHTML =
+          '<span>' + (it.time || "--") + '</span>' +
+          '<span>' + (it.ip || "--") + '</span>' +
+          '<span><span class="badge ' + ((it.status||"").toLowerCase()==="ok"?"ok":"warn") + '">' + (it.status || "--") + '</span></span>';
+        list.appendChild(row);
+      });
+    }
+    $("historyResult").classList.add("show");
+  } catch (e) {
+    showPopup("Không thể lấy lịch sử.", true);
+  } finally {
+    $("historyBtn").disabled = false;
+    $("historyBtn").textContent = "XEM LỊCH SỬ";
+  }
+});
+
+const overlay = $("annOverlay");
+let annList = [];
+let annIndex = 0;
+function showAnn(i) {
+  if (!annList.length) return;
+  annIndex = ((i % annList.length) + annList.length) % annList.length;
+  const item = annList[annIndex];
+  $("annTitle").textContent = item.title || "";
+  $("annBody").textContent = item.content || "";
+  $("annMeta").textContent = item.created_ts ? new Date(item.created_ts * 1000).toLocaleString("vi-VN") : "";
+  $("annPager").textContent = (annList.length > 1) ? (annIndex + 1) + " / " + annList.length : "";
+  overlay.classList.add("show");
+}
+function hideAnn() { overlay.classList.remove("show"); }
+$("annClose") && ($("annClose").onclick = () => hideAnn());
+$("annDismiss") && ($("annDismiss").onclick = () => {
+  try { localStorage.setItem("cpv_ann_dismiss_until", String(Date.now() + 2 * 3600 * 1000)); } catch (_) {}
+  hideAnn();
+});
+overlay && (overlay.onclick = (e) => { if (e.target === overlay) hideAnn(); });
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && overlay.classList.contains("show")) hideAnn();
+});
+
+(async function loadAnns() {
+  try {
+    const r = await fetch("/api/announcements/active");
+    const d = await r.json();
+    const items = (d && d.items) || [];
+    if (!items.length) return;
+    let until = 0;
+    try { until = parseInt(localStorage.getItem("cpv_ann_dismiss_until") || "0", 10) || 0; } catch (_) {}
+    if (until && Date.now() < until) return;
+    annList = items;
+    showAnn(0);
+  } catch (_) {}
+})();
+
+try {
+  const saved = localStorage.getItem("cpv_key");
+  if (saved) $("licenseInput").value = saved;
+} catch (_) {}
+
+fetchIp();
+
+function renderServerListInto(host, aims) {
+  host.innerHTML = "";
+  aims.forEach((aim, idx) => {
+    const row = document.createElement("div");
+    row.className = "server-item";
+    row.innerHTML =
+      '<div class="server-item-idx">' + String(idx + 1).padStart(2, "0") + '</div>' +
+      '<div class="server-item-body">' +
+        '<div class="server-item-name">' + escapeHtml(aim.label || aim.name || "") + '</div>' +
+        '<div class="server-item-endpoint">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3"/><path d="M5.6 5.6l2.1 2.1"/><path d="M18.4 5.6l-2.1 2.1"/><circle cx="12" cy="17" r="3"/><path d="M8 17h1M15 17h1"/><path d="M5 11h2M17 11h2"/><path d="M9 11a3 3 0 0 1 6 0"/></svg>' +
+          '<span class="server-item-endpoint-text">' + escapeHtml(aim.endpoint || (aim.ip + ":" + aim.port)) + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<button type="button" class="server-item-copy" data-endpoint="' + escapeHtml(aim.endpoint || (aim.ip + ":" + aim.port)) + '" aria-label="Sao chép IP:Port">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>' +
+        '<span>Sao chép</span>' +
+      '</button>';
+    host.appendChild(row);
+  });
+  host.querySelectorAll(".server-item-copy").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const ep = btn.getAttribute("data-endpoint") || "";
+      const labelEl = btn.querySelector("span");
+      const ok = await copyText(ep);
+      if (!labelEl) return;
+      const old = labelEl.textContent;
+      labelEl.textContent = ok ? "Đã sao chép" : "Lỗi";
+      btn.classList.toggle("copied", ok);
+      setTimeout(() => {
+        labelEl.textContent = old;
+        btn.classList.remove("copied");
+      }, 1600);
+    });
+  });
+}
+</script>
+<script src="toast.js" type="module"></script>
+</body>
+</html>
